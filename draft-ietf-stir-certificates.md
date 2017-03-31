@@ -38,57 +38,39 @@ normative:
       seriesinfo:
         NIST: FIPS PUB 186-4
   X.509:
-       title: "X.680"
-       date: 2013
+       title: "Information technology - Open Systems Interconnection - The Directory: Public-key and attribute certificate frameworks"
+       date: 2012
        author:
-         org: ITU-T/ISO|IEC
-       seriesinfo:
-         NIST: X.500
+         org: ITU-T Recommendation X.509 | ISO/IEC 9594-8
+         
   X.680:
-        title: "X.680"
-        date: 2013
+        title: "Information Technology - Abstract Syntax Notation One: Specification of basic notation"
+        date: 2015
         author:
-            org: ITU-T/ISO|IEC
-        seriesinfo:
-            NIST: X.500
+            org: ITU-T Recommendation X.680 | ISO/IEC 8824-1
   X.681:
-        title: "X.680"
-        date: 2013
+        title: "Information Technology - Abstract Syntax Notation One: Information Object Specification"
+        date: 2015
         author:
-            org: ITU-T/ISO|IEC
-        seriesinfo:
-            NIST: X.500
-  X.681:
-        title: "X.680"
-        date: 2013
-        author:
-            org: ITU-T/ISO|IEC
-        seriesinfo:
-            NIST: X.500
+            org: ITU-T Recommendation X.681 | ISO/IEC 8824-2
   X.682:
-        title: "X.680"
-        date: 2013
+        title: "Information Technology - Abstract Syntax Notation One: Constraint Specification"
+        date: 2015
         author:
-            org: ITU-T/ISO|IEC
-        seriesinfo:
-            NIST: X.500
+            org: ITU-T Recommendation X.682 | ISO/IEC 8824-2
   X.683:
-        title: "X.683"
-        date: 2013
+        title: "Information Technology - Abstract Syntax Notation One: Parameterization of ASN.1 Specifications"
+        date: 2015
         author:
-            org: ITU-T/ISO|IEC
-        seriesinfo:
-            NIST: X.500
+            org: ITU-T Recommendation X.683 | ISO/IEC 8824-3
 
 informative:
 
   X.520:
-        title: "X.683"
-        date: 2013
+        title: "Information technology - Open Systems Interconnection - The Directory: Selected Attribute Types"
+        date: 2012
         author:
-            org: ITU-T/ISO|IEC
-        seriesinfo:
-            NIST: X.500
+            org: ITU-T Recommendation X.520 | ISO/IEC 9594-6 
 
 --- abstract
 
