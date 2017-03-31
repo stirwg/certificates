@@ -451,21 +451,42 @@ address {
 <p id="rfc.section.8.p.3">The JWT Claim Constraints certificate extension is identified by the following object identifier (OID), which is defined under the id-pe OID arc defined in <a href="#RFC5280">[RFC5280]</a> and managed by IANA (see Section 11):</p>
 <p id="rfc.section.8.p.4">id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 25 }</p>
 <p id="rfc.section.8.p.5">The JWT Claim Constraints certificate extension has the following syntax:</p>
-<p id="rfc.section.8.p.6">JWTClaimConstraints ::= SEQUENCE SIZE (1..MAX) OF JWTClaimConstraint</p>
-<p id="rfc.section.8.p.7">JWTClaimConstraint ::= SEQUENCE { claim     IA5String, permitted SEQUENCE OF IA5String }</p>
+<pre>
+JWTClaimConstraints ::= SEQUENCE SIZE (1..MAX) OF JWTClaimConstraint
+
+JWTClaimConstraint ::= SEQUENCE {
+  claim     IA5String,
+  permitted SEQUENCE OF IA5String
+  }
+</pre>
 <h1 id="rfc.section.9"><a href="#rfc.section.9">9.</a> <a href="#tn-authorization-list-syntax" id="tn-authorization-list-syntax">TN Authorization List Syntax</a></h1>
 <p id="rfc.section.9.p.1">The subjects of certificates containing the TN Authorization List extension are the administrative entities to whom numbers are assigned or delegated.  When a verifier is validating a caller&#8217;s identity, local policy always determines the circumstances under which any particular subject may be trusted, but the purpose of the TN Authorization List extension in particular is to allow a verifier to ascertain when the CA has designated that the subject has authority over a particular telephone number or number range.  The non critical Telephony Number (TN) Authorization List certificate extension is included in the Certificate&#8217;s extension field <a href="#RFC5280">[RFC5280]</a>.  The extension is defined with ASN.1 <a href="#X.680">[X.680]</a><a href="#X.681">[X.681]</a><a href="#X.682">[X.682]</a> <a href="#X.683">[X.683]</a>.  What follows is the syntax and semantics of the extension.</p>
 <p id="rfc.section.9.p.2">The subjects of certificates containing the TN Authorization List extension are the administrative entities to whom numbers are assigned or delegated.  In an end entity certificate, TN Authorization List indicates the TNs which the certificate has been authorized.  In a CA certificate, the TN Authorization List limits the set of TNs for certification paths that include this certificate.</p>
 <p id="rfc.section.9.p.3">The Telephony Number (TN) Authorization List certificate extension is identified by the following object identifier (OID), which is defined under the id-pe OID arc defined in <a href="#RFC5280">[RFC5280]</a> and managed by IANA (see Section 11):</p>
 <p id="rfc.section.9.p.4">id-pe-TNAuthList OBJECT IDENTIFIER ::= { id-pe 26 }</p>
 <p id="rfc.section.9.p.5">The TN Authorization List certificate extension has the following syntax:</p>
-<p id="rfc.section.9.p.6">TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry</p>
-<p id="rfc.section.9.p.7">TNEntry ::= CHOICE { spc   [0] ServiceProviderCodeList, range [1] TelephoneNumberRange, one       E164Number }</p>
-<p id="rfc.section.9.p.8">ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String</p>
-<p id="rfc.section.9.p.9">&#8211; Service Provider Codes may be OCNs, various SPIDs, or other &#8211; SP identifiers from the telephone network</p>
-<p id="rfc.section.9.p.10">TelephoneNumberRange ::= SEQUENCE { start E164Number, count INTEGER }</p>
-<p id="rfc.section.9.p.11">E164Number ::= IA5String (SIZE (1..15)) (FROM (&#8220;0123456789#*&#8221;))</p>
-<p id="rfc.section.9.p.12">The TN Authorization List certificate extension indicates the authorized phone numbers for the call setup signer.  It indicates one or more blocks of telephone number entries that have been authorized for use by the call setup signer.  There are three ways to identify the block:</p>
+<pre>
+TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry
+
+TNEntry ::= CHOICE {
+  spc   [0] ServiceProviderCodeList,
+  range [1] TelephoneNumberRange,
+  one       E164Number
+  }
+
+ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String
+
+-- Service Provider Codes may be OCNs, various SPIDs, or other
+-- SP identifiers from the telephone network
+
+TelephoneNumberRange ::= SEQUENCE {
+  start E164Number,
+  count INTEGER
+  }
+
+E164Number ::= IA5String (SIZE (1..15)) (FROM ("0123456789#*"))
+</pre>
+<p id="rfc.section.9.p.6">The TN Authorization List certificate extension indicates the authorized phone numbers for the call setup signer.  It indicates one or more blocks of telephone number entries that have been authorized for use by the call setup signer.  There are three ways to identify the block:</p>
 <p/>
 
 <ol>
@@ -473,7 +494,7 @@ address {
   <li>Telephone numbers can be listed in a range (in the TelephoneNumberRange format), which consists of a starting telephone number and then an integer count of numbers within the range, where the valid boundaries of ranges may vary according to national policies, or</li>
   <li>A single telephone number can be listed (as an E164Number).</li>
 </ol>
-<p id="rfc.section.9.p.14">Note that because large-scale service providers may want to associate many numbers, possibly millions of numbers, with a particular certificate, optimizations are required for those cases to prevent certificate size from becoming unmanageable.  In these cases, the TN Authorization List may be given by reference rather than by value, through the presence of a separate certificate extension that permits verifiers to either securely download the list of numbers associated with a certificate, or to verify that a single number is under the authority of this certificate.  For more on this optimization, see Section 10.1.</p>
+<p id="rfc.section.9.p.8">Note that because large-scale service providers may want to associate many numbers, possibly millions of numbers, with a particular certificate, optimizations are required for those cases to prevent certificate size from becoming unmanageable.  In these cases, the TN Authorization List may be given by reference rather than by value, through the presence of a separate certificate extension that permits verifiers to either securely download the list of numbers associated with a certificate, or to verify that a single number is under the authority of this certificate.  For more on this optimization, see Section 10.1.</p>
 <h1 id="rfc.section.10"><a href="#rfc.section.10">10.</a> <a href="#certificate-freshness-and-revocation" id="certificate-freshness-and-revocation">Certificate Freshness and Revocation</a></h1>
 <p id="rfc.section.10.p.1">Regardless of which of the approaches in Section 3 is followed for using certificates, a certificate verification mechanism is required.  However, the traditional problem of certificate freshness gains a new wrinkle when using the TN Authorization List extension with telephone numbers or number ranges (as opposed to SPCs), because verifiers must establish not only that a certificate remains valid, but also that the certificate&#8217;s scope contains the telephone number that the verifier is validating.  Dynamic changes to number assignments can occur due to number portability, for example.  So even if a verifier has a valid cached certificate for a telephone number (or a range containing the number), the verifier must determine that the entity that signed is still a proper authority for that number.</p>
 <p id="rfc.section.10.p.2">To verify the status of such a certificate, the verifier needs to acquire the certificate if necessary (via the methods described in Section 7), and then would need to either:</p>
@@ -657,29 +678,80 @@ address {
 <p id="rfc.section.A.p.1">This appendix provides the normative ASN.1 <a href="#X.680">[X.680]</a> definitions for the structures described in this specification using ASN.1, as defined in <a href="#X.680">[X.680]</a> through <a href="#X.683">[X.683]</a>.</p>
 <p id="rfc.section.A.p.2">The modules defined in this document are compatible with the most current ASN.1 specification published in 2015 (see <a href="#X.680">[X.680]</a>, <a href="#X.681">[X.681]</a>, <a href="#X.682">[X.682]</a>, <a href="#X.683">[X.683]</a>).  None of the newly defined tokens in the 2008 ASN.1 (DATE, DATE-TIME, DURATION, NOT-A-NUMBER, OID-IRI, RELATIVE- OID-IRI, TIME, TIME-OF-DAY)) are currently used in any of the ASN.1 specifications referred to here.</p>
 <p id="rfc.section.A.p.3">This ASN.1 module imports ASN.1 from <a href="#RFC5912">[RFC5912]</a>.</p>
-<p id="rfc.section.A.p.4">TN-Module-2016 { iso(1) identified-organization(3) dod(6) internet(1) security(5) mechanisms(5) pkix(7) id-mod(0) id-mod-tn-module(88) }</p>
-<p id="rfc.section.A.p.5">DEFINITIONS EXPLICIT TAGS ::= BEGIN</p>
-<p id="rfc.section.A.p.6">IMPORTS</p>
-<p id="rfc.section.A.p.7">id-ad, id-pe FROM PKIX1Explicit-2009  &#8211; From <a href="#RFC5912">[RFC5912]</a> { iso(1) identified-organization(3) dod(6) internet(1) security(5) mechanisms(5) pkix(7) id-mod(0) id-mod-pkix1-explicit-02(51) }</p>
-<p id="rfc.section.A.p.8">EXTENSION FROM PKIX-CommonTypes-2009  &#8211; From <a href="#RFC5912">[RFC5912]</a> { iso(1) identified-organization(3) dod(6) internet(1) security(5) mechanisms(5) pkix(7) id-mod(0) id-mod-pkixCommon-02(57) }</p>
-<p id="rfc.section.A.p.9">;</p>
-<p id="rfc.section.A.p.10">&#8211; &#8211; JWT Claim Constraints Certificate Extension &#8211;</p>
-<p id="rfc.section.A.p.11">ext-jwtClaimConstraints EXTENSION  ::= { SYNTAX JWTClaimConstraints IDENTIFIED BY id-pe-JWTClaimConstraints }</p>
-<p id="rfc.section.A.p.12">id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 25 }</p>
-<p id="rfc.section.A.p.13">JWTClaimConstraints ::= SEQUENCE SIZE (1..MAX) OF JWTClaimConstraint</p>
-<p id="rfc.section.A.p.14">JWTClaimConstraint ::= SEQUENCE { claim     IA5String, permitted SEQUENCE OF IA5String }</p>
-<p id="rfc.section.A.p.15">&#8211; &#8211; Telephone Number Authorization List Certificate Extension &#8211;</p>
-<p id="rfc.section.A.p.16">ext-tnAuthList  EXTENSION  ::= { SYNTAX TNAuthorizationList IDENTIFIED BY id-pe-TNAuthList }</p>
-<p id="rfc.section.A.p.17">id-pe-TNAuthList OBJECT IDENTIFIER ::= { id-pe 26 }</p>
-<p id="rfc.section.A.p.18">TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry</p>
-<p id="rfc.section.A.p.19">TNEntry ::= CHOICE { spc    [0] ServiceProviderCodeList, range  [1] TelephoneNumberRange, one        E164Number }</p>
-<p id="rfc.section.A.p.20">ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String</p>
-<p id="rfc.section.A.p.21">&#8211; Service Provider Codes may be OCNs, various SPIDs, or other &#8211; SP identifiers from the telephone network</p>
-<p id="rfc.section.A.p.22">TelephoneNumberRange ::= SEQUENCE { start E164Number, count INTEGER }</p>
-<p id="rfc.section.A.p.23">E164Number ::= IA5String (SIZE (1..15)) (FROM (&#8220;0123456789&#8221;))</p>
-<p id="rfc.section.A.p.24">&#8211; TN Access Descriptor</p>
-<p id="rfc.section.A.p.25">id-ad-stirTNList OBJECT IDENTIFIER ::= { id-ad 14 }</p>
-<p id="rfc.section.A.p.26">END</p>
+<pre>
+TN-Module-2016
+  { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+    mechanisms(5) pkix(7) id-mod(0) id-mod-tn-module(88) }
+
+DEFINITIONS EXPLICIT TAGS ::= BEGIN
+
+IMPORTS
+
+id-ad, id-pe
+FROM PKIX1Explicit-2009  -- From {{RFC5912}}
+  { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+     mechanisms(5) pkix(7) id-mod(0) id-mod-pkix1-explicit-02(51) }
+
+EXTENSION
+FROM PKIX-CommonTypes-2009  -- From {{RFC5912}}
+  { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+    mechanisms(5) pkix(7) id-mod(0) id-mod-pkixCommon-02(57) }
+
+;
+
+--
+-- JWT Claim Constraints Certificate Extension
+--
+
+ext-jwtClaimConstraints EXTENSION  ::= {
+  SYNTAX JWTClaimConstraints IDENTIFIED BY id-pe-JWTClaimConstraints
+}
+
+id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 25 }
+
+JWTClaimConstraints ::= SEQUENCE SIZE (1..MAX) OF JWTClaimConstraint
+
+JWTClaimConstraint ::= SEQUENCE {
+  claim     IA5String,
+  permitted SEQUENCE OF IA5String
+  }
+
+--
+-- Telephone Number Authorization List Certificate Extension
+--
+
+ext-tnAuthList  EXTENSION  ::= {
+  SYNTAX TNAuthorizationList IDENTIFIED BY id-pe-TNAuthList
+  }
+
+id-pe-TNAuthList OBJECT IDENTIFIER ::= { id-pe 26 }
+
+TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry
+
+TNEntry ::= CHOICE {
+  spc    [0] ServiceProviderCodeList,
+  range  [1] TelephoneNumberRange,
+  one        E164Number
+  }
+
+ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String
+
+-- Service Provider Codes may be OCNs, various SPIDs, or other
+-- SP identifiers from the telephone network
+
+TelephoneNumberRange ::= SEQUENCE {
+  start E164Number,
+  count INTEGER
+  }
+
+E164Number ::= IA5String (SIZE (1..15)) (FROM ("0123456789"))
+
+-- TN Access Descriptor
+
+id-ad-stirTNList OBJECT IDENTIFIER ::= { id-ad 14 }
+
+END
+</pre>
 <h1 id="rfc.authors">
   <a href="#rfc.authors">Authors' Addresses</a>
 </h1>
