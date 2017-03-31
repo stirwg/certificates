@@ -412,18 +412,16 @@ address {
   <li>Procedures required to extract keying material from the resources designated by the URI: implementations perform no special procedures beyond dereferencing the &#8220;info&#8221; URI.  See Section 7.</li>
   <li>Procedures used by the verification service to determine the scope of the credential: this specification effectively proposes two methods, as outlined in Section 3: one where the subject (or more properly subjectAltName) of the certificate indicates the scope of authority through a domain name, and relying parties either trust the subject entirely or have some direct means of determining whether or not a number falls under a subject&#8217;s authority; and another where an extension to the certificate as described in Section 9 identifies the scope of authority of the certificate.</li>
   <li>The cryptographic algorithms required to validate the credentials: for this specification, that means the signature algorithms used to sign certificates.  This specification REQUIRES that implementations support both ECDSA with the P-256 curve (see <a href="#DSS">[DSS]</a>) and RSA PKCS#1 v1.5 (see <a href="#RFC3447">[RFC3447]</a> Section 8.2) for certificate signatures.  Implementers are advised that RS256 is mandated only as a transitional mechanism, due to its widespread use in existing PKI, but we anticipate that this mechanism will eventually be deprecated.</li>
-  <li>Finally, note that all certificates compliant with this specification:</li>
+  <li>Finally, note that all certificates compliant with this specification:  <ul><li>MUST provide cryptographic keying material sufficient to generate the ECDSA using P-256 and SHA-256 signatures necessary to support the ES256 hashed signatures required by PASSporT <a href="#I-D.ietf-stir-passport">[I-D.ietf-stir-passport]</a>, which in turn follows JSON Web Token (JWT) <a href="#RFC7519">[RFC7519]</a>.</li><li>MUST support both ECDSA with P-256 and RSA PKCS#1 v1.5 for certificate signature verification.</li></ul></li>
 </ol>
+<p id="rfc.section.4.p.3">This document also includes additional certificate-related requirements:</p>
 <p/>
 
 <ul>
-  <li>MUST provide cryptographic keying material sufficient to generate the ECDSA using P-256 and SHA-256 signatures necessary to support the ES256 hashed signatures required by PASSporT <a href="#I-D.ietf-stir-passport">[I-D.ietf-stir-passport]</a>, which in turn follows JSON Web Token (JWT) <a href="#RFC7519">[RFC7519]</a>.</li>
-  <li>MUST support both ECDSA with P-256 and RSA PKCS#1 v1.5 for certificate signature verification.</li>
+  <li>See Section 5.1 for requirements related to the certificate policies extension.</li>
+  <li>See Section 7 for requirements related to relying parties acquiring credentials.</li>
+  <li>See Section 10 and Section 10.1 for requirements related to certificate freshness and the Authority Information Access (AIA) certificate extension.</li>
 </ul>
-<p id="rfc.section.4.p.4">This document also includes additional certificate-related requirements:</p>
-<p id="rfc.section.4.p.5">o  See Section 5.1 for requirements related to the certificate policies extension.</p>
-<p id="rfc.section.4.p.6">o  See Section 7 for requirements related to relying parties acquiring credentials.</p>
-<p id="rfc.section.4.p.7">o  See Section 10 and Section 10.1 for requirements related to certificate freshness and the Authority Information Access (AIA) certificate extension.</p>
 <h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#enrollment-and-authorization-using-the-tn-authorization-list" id="enrollment-and-authorization-using-the-tn-authorization-list">Enrollment and Authorization using the TN Authorization List</a></h1>
 <p id="rfc.section.5.p.1">This document covers three models for enrollment when using the TN Authorization List extension.</p>
 <p id="rfc.section.5.p.2">The first enrollment model is one where the CA acts in concert with national numbering authorities to issue credentials to those parties to whom numbers are assigned.  In the United States, for example, telephone number blocks are assigned to Local Exchange Carriers (LECs) by the North American Numbering Plan Administrator (NANPA), who is in turn directed by the national regulator.  LECs may also receive numbers in smaller allocations, through number pooling, or via an individual assignment through number portability.  LECs assign numbers to customers, who may be private individuals or organizations - and organizations take responsibility for assigning numbers within their own enterprise.  This model requires top-down adoption of the model from regulators through to carriers.  Assignees of E.164 numbering resources participating in this enrollment model should take appropriate steps to establish trust anchors.</p>
@@ -449,8 +447,10 @@ address {
 <p id="rfc.section.8.p.1">The subjects of certificates containing the JWT Claim Constraints certificate extension are specifies values for PASSporT claims that are permitted.  The syntax of these claims is given in PASSporT; specifying new claims follows the procedures in <a href="#I-D.ietf-stir-passport">[I-D.ietf-stir-passport]</a> (Section 8.3).  When a verifier is validating PASSporT claims, the JWT claim MUST contain permitted values.  The non-critical JWT Claim Constraints certificate extension is included in the extension field of end entity certificates <a href="#RFC5280">[RFC5280]</a>.  The extension is defined with ASN.1 <a href="#X.680">[X.680]</a><a href="#X.681">[X.681]</a> <a href="#X.682">[X.682]</a><a href="#X.683">[X.683]</a>.</p>
 <p id="rfc.section.8.p.2">The JWT Claim Constraints certificate extension places constraints on the values that are allowed in particular JWT claims.  This certificate extension is optional, but if present, it constrains the claims that authentication services may included in the PASSporT objects they sign.  For example, imagine a PASSporT extension claim called &#8220;confidence&#8221; with values &#8220;low&#8221;, &#8220;medium&#8221;, and &#8220;high&#8221;.  If a CA issues to an authentication service a certificate that contains the value &#8220;confidence&#8221; in the &#8220;claim&#8221; field and &#8220;high&#8221; in the &#8220;permitted&#8221; feild of the JWT Claim Constraints, then an authentication service MAY add a &#8220;high&#8221; &#8220;confidence&#8221; claim to any PASSporTs it generates.  A verification service MUST treat as invalid any PASSporT it receives with a PASSporT extension claim that is not included in JWT Claim Constraints.  The baseline claims of PASSporT (&#8220;orig&#8221;, &#8220;dest&#8221;, &#8220;iat&#8221; and &#8220;mky&#8221;) are considered to be permitted by default and SHOULD NOT be included in the &#8220;claim&#8221; field.  The issuer of a certificate may similarly explicitly allow the use of a particular claim by the holder of the certificate.  If a certificate contains no JWT Claim Constraints, the issuer of the certificate permits all claims.</p>
 <p id="rfc.section.8.p.3">The JWT Claim Constraints certificate extension is identified by the following object identifier (OID), which is defined under the id-pe OID arc defined in <a href="#RFC5280">[RFC5280]</a> and managed by IANA (see Section 11):</p>
-<p id="rfc.section.8.p.4">id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 25 }</p>
-<p id="rfc.section.8.p.5">The JWT Claim Constraints certificate extension has the following syntax:</p>
+<pre>
+id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 25 }
+</pre>
+<p id="rfc.section.8.p.4">The JWT Claim Constraints certificate extension has the following syntax:</p>
 <pre>
 JWTClaimConstraints ::= SEQUENCE SIZE (1..MAX) OF JWTClaimConstraint
 
@@ -463,8 +463,10 @@ JWTClaimConstraint ::= SEQUENCE {
 <p id="rfc.section.9.p.1">The subjects of certificates containing the TN Authorization List extension are the administrative entities to whom numbers are assigned or delegated.  When a verifier is validating a caller&#8217;s identity, local policy always determines the circumstances under which any particular subject may be trusted, but the purpose of the TN Authorization List extension in particular is to allow a verifier to ascertain when the CA has designated that the subject has authority over a particular telephone number or number range.  The non critical Telephony Number (TN) Authorization List certificate extension is included in the Certificate&#8217;s extension field <a href="#RFC5280">[RFC5280]</a>.  The extension is defined with ASN.1 <a href="#X.680">[X.680]</a><a href="#X.681">[X.681]</a><a href="#X.682">[X.682]</a> <a href="#X.683">[X.683]</a>.  What follows is the syntax and semantics of the extension.</p>
 <p id="rfc.section.9.p.2">The subjects of certificates containing the TN Authorization List extension are the administrative entities to whom numbers are assigned or delegated.  In an end entity certificate, TN Authorization List indicates the TNs which the certificate has been authorized.  In a CA certificate, the TN Authorization List limits the set of TNs for certification paths that include this certificate.</p>
 <p id="rfc.section.9.p.3">The Telephony Number (TN) Authorization List certificate extension is identified by the following object identifier (OID), which is defined under the id-pe OID arc defined in <a href="#RFC5280">[RFC5280]</a> and managed by IANA (see Section 11):</p>
-<p id="rfc.section.9.p.4">id-pe-TNAuthList OBJECT IDENTIFIER ::= { id-pe 26 }</p>
-<p id="rfc.section.9.p.5">The TN Authorization List certificate extension has the following syntax:</p>
+<pre>
+id-pe-TNAuthList OBJECT IDENTIFIER ::= { id-pe 26 }
+</pre>
+<p id="rfc.section.9.p.4">The TN Authorization List certificate extension has the following syntax:</p>
 <pre>
 TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry
 
@@ -486,7 +488,7 @@ TelephoneNumberRange ::= SEQUENCE {
 
 E164Number ::= IA5String (SIZE (1..15)) (FROM ("0123456789#*"))
 </pre>
-<p id="rfc.section.9.p.6">The TN Authorization List certificate extension indicates the authorized phone numbers for the call setup signer.  It indicates one or more blocks of telephone number entries that have been authorized for use by the call setup signer.  There are three ways to identify the block:</p>
+<p id="rfc.section.9.p.5">The TN Authorization List certificate extension indicates the authorized phone numbers for the call setup signer.  It indicates one or more blocks of telephone number entries that have been authorized for use by the call setup signer.  There are three ways to identify the block:</p>
 <p/>
 
 <ol>
@@ -494,27 +496,37 @@ E164Number ::= IA5String (SIZE (1..15)) (FROM ("0123456789#*"))
   <li>Telephone numbers can be listed in a range (in the TelephoneNumberRange format), which consists of a starting telephone number and then an integer count of numbers within the range, where the valid boundaries of ranges may vary according to national policies, or</li>
   <li>A single telephone number can be listed (as an E164Number).</li>
 </ol>
-<p id="rfc.section.9.p.8">Note that because large-scale service providers may want to associate many numbers, possibly millions of numbers, with a particular certificate, optimizations are required for those cases to prevent certificate size from becoming unmanageable.  In these cases, the TN Authorization List may be given by reference rather than by value, through the presence of a separate certificate extension that permits verifiers to either securely download the list of numbers associated with a certificate, or to verify that a single number is under the authority of this certificate.  For more on this optimization, see Section 10.1.</p>
+<p id="rfc.section.9.p.7">Note that because large-scale service providers may want to associate many numbers, possibly millions of numbers, with a particular certificate, optimizations are required for those cases to prevent certificate size from becoming unmanageable.  In these cases, the TN Authorization List may be given by reference rather than by value, through the presence of a separate certificate extension that permits verifiers to either securely download the list of numbers associated with a certificate, or to verify that a single number is under the authority of this certificate.  For more on this optimization, see Section 10.1.</p>
 <h1 id="rfc.section.10"><a href="#rfc.section.10">10.</a> <a href="#certificate-freshness-and-revocation" id="certificate-freshness-and-revocation">Certificate Freshness and Revocation</a></h1>
 <p id="rfc.section.10.p.1">Regardless of which of the approaches in Section 3 is followed for using certificates, a certificate verification mechanism is required.  However, the traditional problem of certificate freshness gains a new wrinkle when using the TN Authorization List extension with telephone numbers or number ranges (as opposed to SPCs), because verifiers must establish not only that a certificate remains valid, but also that the certificate&#8217;s scope contains the telephone number that the verifier is validating.  Dynamic changes to number assignments can occur due to number portability, for example.  So even if a verifier has a valid cached certificate for a telephone number (or a range containing the number), the verifier must determine that the entity that signed is still a proper authority for that number.</p>
 <p id="rfc.section.10.p.2">To verify the status of such a certificate, the verifier needs to acquire the certificate if necessary (via the methods described in Section 7), and then would need to either:</p>
-<p id="rfc.section.10.p.3">(a)  Rely on short-lived certificates and not check the certificate&#8217;s status, or</p>
-<p id="rfc.section.10.p.4">(b)  Rely on status information from the authority (e.g., OCSP)</p>
+<p id="rfc.section.10.p.3">a.  Rely on short-lived certificates and not check the certificate&#8217;s status, or</p>
+<p id="rfc.section.10.p.4">b.  Rely on status information from the authority (e.g., OCSP)</p>
 <p id="rfc.section.10.p.5">The tradeoff between short lived certificates and using status information is that the former&#8217;s burden is on the front end (i.e., enrollment) and the latter&#8217;s burden is on the back end (i.e., verification).  Both impact call setup time, but some approaches to generating a short-lived certificate, like requiring one for each call, would incur a greater operational cost than acquiring status information.  This document makes no particular recommndation for a means of determinate certificate freshness for STIR, as this requires further study and implementation experience.  Acquiring online status information for certificates has the potential to disclose private information <a href="#RFC7258">[RFC7258]</a> if proper precautions are not taken.  Future specifications that define certificate freshness mechanisms for STIR MUST note any such risks and provide countermeasures where possible.</p>
 <h2 id="rfc.section.10.1"><a href="#rfc.section.10.1">10.1.</a> <a href="#acquiring-tn-lists-by-reference" id="acquiring-tn-lists-by-reference">Acquiring TN Lists By Reference</a></h2>
 <p id="rfc.section.10.1.p.1">One alternative to checking certificate status for a particular telephone number is simply acquiring the TN Authorization List by reference, that is, through dereferencing a URL in the certificate, rather than including the value of the TN Authorization List in the certificate itself.</p>
 <p id="rfc.section.10.1.p.2">Acquiring a list of the telephone numbers associated with a certificate or its subject lends itself to an application-layer query/response interaction outside of certificate status, one which could be initiated through a separate URI included in the certificate.  The AIA extension (see <a href="#RFC5280">[RFC5280]</a>) supports such a mechanism: it designates an OID to identify the accessMethod and an accessLocation, which would most likely be a URI.  A verifier would then follow the URI to ascertain whether the list of TNs are authorized for use by the caller.</p>
 <p id="rfc.section.10.1.p.3">HTTPS is the most obvious candidate for a protocol to be used for fetching the list of telephone numbers associated with a particular certificate.  This document defines a new AIA accessMethod, called &#8220;id-ad-stirTNList&#8221;, which uses the following AIA OID:</p>
-<p id="rfc.section.10.1.p.4">id-ad-stirTNList  OBJECT IDENTIFIER ::= { id-ad 14 }</p>
-<p id="rfc.section.10.1.p.5">When the &#8220;id-ad-stirTNList&#8221; accessMethod is used, the accessLocation MUST be an HTTPS URI.  The document returned by dereferencing that URI will contain the complete TN Authorization List (see Section 9) for the certificate.</p>
-<p id="rfc.section.10.1.p.6">Delivering the entire list of telephone numbers associated with a particular certificate will divulge to STIR verifiers information about telephone numbers other than the one associated with the particular call that the verifier is checking.  In some environments, where STIR verifiers handle a high volume of calls, maintaining an up-to-date and complete cache for the numbers associated with crucial certificate holders could give an important boost to performance.</p>
+<pre>
+id-ad-stirTNList  OBJECT IDENTIFIER ::= { id-ad 14 }
+</pre>
+<p id="rfc.section.10.1.p.4">When the &#8220;id-ad-stirTNList&#8221; accessMethod is used, the accessLocation MUST be an HTTPS URI.  The document returned by dereferencing that URI will contain the complete TN Authorization List (see Section 9) for the certificate.</p>
+<p id="rfc.section.10.1.p.5">Delivering the entire list of telephone numbers associated with a particular certificate will divulge to STIR verifiers information about telephone numbers other than the one associated with the particular call that the verifier is checking.  In some environments, where STIR verifiers handle a high volume of calls, maintaining an up-to-date and complete cache for the numbers associated with crucial certificate holders could give an important boost to performance.</p>
 <h1 id="rfc.section.11"><a href="#rfc.section.11">11.</a> <a href="#iana-considerations" id="iana-considerations">IANA Considerations</a></h1>
 <p id="rfc.section.11.p.1">This document makes use of object identifiers for the TN Certificate Extension defined in Section 9, the TN by reference AIA access descriptor defined in Section 10.1, and the ASN.1 module identifier defined in Appendix A.  It therefore requests that the IANA make the following assignments:</p>
-<p id="rfc.section.11.p.2">o  JWT Claim Constraints Certificate Extension in the SMI Security for PKIX Certificate Extension registry:</p>
+<p/>
+
+<ul>
+  <li>JWT Claim Constraints Certificate Extension in the SMI Security for PKIX Certificate Extension registry:</li>
+</ul>
 <p id="rfc.section.11.p.3">http://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi- numbers-1.3.6.1.5.5.7.1</p>
-<p id="rfc.section.11.p.4">o  TN Certificate Extension in the SMI Security for PKIX Certificate Extension registry: http://www.iana.org/assignments/smi-numbers/ smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.1</p>
-<p id="rfc.section.11.p.5">o  TNS by reference access descriptor in the SMI Security for PKIX Access Descriptor registry: http://www.iana.org/assignments/smi- numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.48</p>
-<p id="rfc.section.11.p.6">o  The TN ASN.1 module in SMI Security for PKIX Module Identifier registry: http://www.iana.org/assignments/smi-numbers/smi- numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.0</p>
+<p/>
+
+<ul>
+  <li>TN Certificate Extension in the SMI Security for PKIX Certificate Extension registry: http://www.iana.org/assignments/smi-numbers/ smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.1</li>
+  <li>TNS by reference access descriptor in the SMI Security for PKIX Access Descriptor registry: http://www.iana.org/assignments/smi- numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.48</li>
+  <li>The TN ASN.1 module in SMI Security for PKIX Module Identifier registry: http://www.iana.org/assignments/smi-numbers/smi- numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.0</li>
+</ul>
 <h1 id="rfc.section.12"><a href="#rfc.section.12">12.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
 <p id="rfc.section.12.p.1">This document is entirely about security.  For further information on certificate security and practices, see <a href="#RFC5280">[RFC5280]</a>, in particular its Security Considerations.</p>
 <h1 id="rfc.section.13"><a href="#rfc.section.13">13.</a> <a href="#acknowledgments" id="acknowledgments">Acknowledgments</a></h1>

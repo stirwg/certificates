@@ -288,27 +288,27 @@ Internet-Draft                 STIR Certs                     March 2017
    5.  Finally, note that all certificates compliant with this
        specification:
 
-   o  MUST provide cryptographic keying material sufficient to generate
-      the ECDSA using P-256 and SHA-256 signatures necessary to support
-      the ES256 hashed signatures required by PASSporT
-      [I-D.ietf-stir-passport], which in turn follows JSON Web Token
-      (JWT) [RFC7519].
+       *  MUST provide cryptographic keying material sufficient to
+          generate the ECDSA using P-256 and SHA-256 signatures
+          necessary to support the ES256 hashed signatures required by
+          PASSporT [I-D.ietf-stir-passport], which in turn follows JSON
+          Web Token (JWT) [RFC7519].
 
-   o  MUST support both ECDSA with P-256 and RSA PKCS#1 v1.5 for
-      certificate signature verification.
+       *  MUST support both ECDSA with P-256 and RSA PKCS#1 v1.5 for
+          certificate signature verification.
 
    This document also includes additional certificate-related
    requirements:
 
-   o See Section 5.1 for requirements related to the certificate
-   policies extension.
+   o  See Section 5.1 for requirements related to the certificate
+      policies extension.
 
-   o See Section 7 for requirements related to relying parties acquiring
-   credentials.
+   o  See Section 7 for requirements related to relying parties
+      acquiring credentials.
 
-   o See Section 10 and Section 10.1 for requirements related to
-   certificate freshness and the Authority Information Access (AIA)
-   certificate extension.
+   o  See Section 10 and Section 10.1 for requirements related to
+      certificate freshness and the Authority Information Access (AIA)
+      certificate extension.
 
 5.  Enrollment and Authorization using the TN Authorization List
 
@@ -699,10 +699,10 @@ Internet-Draft                 STIR Certs                     March 2017
    acquire the certificate if necessary (via the methods described in
    Section 7), and then would need to either:
 
-   (a) Rely on short-lived certificates and not check the certificate's
+   a.  Rely on short-lived certificates and not check the certificate's
    status, or
 
-   (b) Rely on status information from the authority (e.g., OCSP)
+   b.  Rely on status information from the authority (e.g., OCSP)
 
    The tradeoff between short lived certificates and using status
    information is that the former's burden is on the front end (i.e.,
@@ -753,7 +753,7 @@ Internet-Draft                 STIR Certs                     March 2017
    certificate.  This document defines a new AIA accessMethod, called
    "id-ad-stirTNList", which uses the following AIA OID:
 
-   id-ad-stirTNList OBJECT IDENTIFIER ::= { id-ad 14 }
+   id-ad-stirTNList  OBJECT IDENTIFIER ::= { id-ad 14 }
 
    When the "id-ad-stirTNList" accessMethod is used, the accessLocation
    MUST be an HTTPS URI.  The document returned by dereferencing that
@@ -776,8 +776,8 @@ Internet-Draft                 STIR Certs                     March 2017
    defined in Appendix A.  It therefore requests that the IANA make the
    following assignments:
 
-   o JWT Claim Constraints Certificate Extension in the SMI Security for
-   PKIX Certificate Extension registry:
+   o  JWT Claim Constraints Certificate Extension in the SMI Security
+      for PKIX Certificate Extension registry:
 
 
 
@@ -789,17 +789,17 @@ Internet-Draft                 STIR Certs                     March 2017
    http://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-
    numbers-1.3.6.1.5.5.7.1
 
-   o TN Certificate Extension in the SMI Security for PKIX Certificate
-   Extension registry: http://www.iana.org/assignments/smi-numbers/ smi-
-   numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.1
+   o  TN Certificate Extension in the SMI Security for PKIX Certificate
+      Extension registry: http://www.iana.org/assignments/smi-numbers/
+      smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.1
 
-   o TNS by reference access descriptor in the SMI Security for PKIX
-   Access Descriptor registry: http://www.iana.org/assignments/smi-
-   numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.48
+   o  TNS by reference access descriptor in the SMI Security for PKIX
+      Access Descriptor registry: http://www.iana.org/assignments/smi-
+      numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.48
 
-   o The TN ASN.1 module in SMI Security for PKIX Module Identifier
-   registry: http://www.iana.org/assignments/smi-numbers/smi-
-   numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.0
+   o  The TN ASN.1 module in SMI Security for PKIX Module Identifier
+      registry: http://www.iana.org/assignments/smi-numbers/smi-
+      numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.0
 
 12.  Security Considerations
 
