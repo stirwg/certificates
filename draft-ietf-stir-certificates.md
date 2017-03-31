@@ -257,25 +257,25 @@ mechanism will eventually be deprecated.
 5.  Finally, note that all certificates compliant with this
 specification:
 
-*  MUST provide cryptographic keying material sufficient to
+    *  MUST provide cryptographic keying material sufficient to
 generate the ECDSA using P-256 and SHA-256 signatures
 necessary to support the ES256 hashed signatures required by
 PASSporT {{?I-D.ietf-stir-passport}}, which in turn follows JSON
 Web Token (JWT) {{?RFC7519}}.
 
-*  MUST support both ECDSA with P-256 and RSA PKCS#1 v1.5 for
+    *  MUST support both ECDSA with P-256 and RSA PKCS#1 v1.5 for
 certificate signature verification.
 
 This document also includes additional certificate-related
 requirements:
 
-o  See Section 5.1 for requirements related to the certificate
+* See Section 5.1 for requirements related to the certificate
 policies extension.
 
-o  See Section 7 for requirements related to relying parties
+* See Section 7 for requirements related to relying parties
 acquiring credentials.
 
-o  See Section 10 and Section 10.1 for requirements related to
+* See Section 10 and Section 10.1 for requirements related to
 certificate freshness and the Authority Information Access (AIA)
 certificate extension.
 
@@ -483,7 +483,9 @@ The JWT Claim Constraints certificate extension is identified by the
 following object identifier (OID), which is defined under the id-pe
 OID arc defined in {{RFC5280}} and managed by IANA (see Section 11):
 
+~~~
 id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 25 }
+~~~
 
 The JWT Claim Constraints certificate extension has the following
 syntax:
@@ -524,7 +526,9 @@ identified by the following object identifier (OID), which is defined
 under the id-pe OID arc defined in {{RFC5280}} and managed by IANA (see
 Section 11):
 
+~~~
 id-pe-TNAuthList OBJECT IDENTIFIER ::= { id-pe 26 }
+~~~
 
 The TN Authorization List certificate extension has the following
 syntax:
@@ -604,10 +608,10 @@ To verify the status of such a certificate, the verifier needs to
 acquire the certificate if necessary (via the methods described in
 Section 7), and then would need to either:
 
-(a)  Rely on short-lived certificates and not check the certificate's
+a.  Rely on short-lived certificates and not check the certificate's
 status, or
 
-(b)  Rely on status information from the authority (e.g., OCSP)
+b.  Rely on status information from the authority (e.g., OCSP)
 
 The tradeoff between short lived certificates and using status
 information is that the former's burden is on the front end (i.e.,
@@ -646,7 +650,9 @@ fetching the list of telephone numbers associated with a particular
 certificate.  This document defines a new AIA accessMethod, called
 "id-ad-stirTNList", which uses the following AIA OID:
 
+~~~
 id-ad-stirTNList  OBJECT IDENTIFIER ::= { id-ad 14 }
+~~~
 
 When the "id-ad-stirTNList" accessMethod is used, the accessLocation
 MUST be an HTTPS URI.  The document returned by dereferencing that
@@ -669,21 +675,21 @@ descriptor defined in Section 10.1, and the ASN.1 module identifier
 defined in Appendix A.  It therefore requests that the IANA make the
 following assignments:
 
-o  JWT Claim Constraints Certificate Extension in the SMI Security
+* JWT Claim Constraints Certificate Extension in the SMI Security
 for PKIX Certificate Extension registry:
 
 http://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-
 numbers-1.3.6.1.5.5.7.1
 
-o  TN Certificate Extension in the SMI Security for PKIX Certificate
+* TN Certificate Extension in the SMI Security for PKIX Certificate
 Extension registry: http://www.iana.org/assignments/smi-numbers/
 smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.1
 
-o  TNS by reference access descriptor in the SMI Security for PKIX
+*  TNS by reference access descriptor in the SMI Security for PKIX
 Access Descriptor registry: http://www.iana.org/assignments/smi-
 numbers/smi-numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.48
 
-o  The TN ASN.1 module in SMI Security for PKIX Module Identifier
+*  The TN ASN.1 module in SMI Security for PKIX Module Identifier
 registry: http://www.iana.org/assignments/smi-numbers/smi-
 numbers.xhtml#smi-numbers-1.3.6.1.5.5.7.0
 
