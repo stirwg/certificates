@@ -1,5 +1,5 @@
 ---
-title: Secure Telephone Identity Credentials: Certificates
+title: Secure Telephone Identity Credentials - Certificates
 abbrev: STIR Certs
 docname: draft-ietf-stir-certificates-latest
 date: {DATE}
