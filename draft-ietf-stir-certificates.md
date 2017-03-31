@@ -26,52 +26,53 @@ author:
 normative:
 
   ATIS-0300251:
-    title: "Codes for Identification of Service Providers for Information Exchange"
-    date: 2007
-    author:
+      title: "Codes for Identification of Service Providers for Information Exchange"
+      date: 2007
+      author:
         org: ATIS Recommendation 0300251
-
-    DSS:
+  DSS:
       title: "Digital Signature Standard, version 4"
       date: 2013
       author:
         org: National Institute of Standards and Technology, U.S. Department of Commerce
       seriesinfo:
         NIST: FIPS PUB 186-4
-
-    X.680:
+  X.509:
+       title: "X.680"
+       date: 2013
+       author:
+         org: ITU-T/ISO|IEC
+       seriesinfo:
+         NIST: X.500
+  X.680:
         title: "X.680"
         date: 2013
         author:
             org: ITU-T/ISO|IEC
         seriesinfo:
             NIST: X.500
-
-    X.681:
+  X.681:
         title: "X.680"
         date: 2013
         author:
             org: ITU-T/ISO|IEC
         seriesinfo:
             NIST: X.500
-
-    X.681:
+  X.681:
         title: "X.680"
         date: 2013
         author:
             org: ITU-T/ISO|IEC
         seriesinfo:
             NIST: X.500
-
-    X.682:
+  X.682:
         title: "X.680"
         date: 2013
         author:
             org: ITU-T/ISO|IEC
         seriesinfo:
             NIST: X.500
-
-    X.683:
+  X.683:
         title: "X.683"
         date: 2013
         author:
@@ -81,7 +82,7 @@ normative:
 
 informative:
 
-    X.520:
+  X.520:
         title: "X.683"
         date: 2013
         author:
@@ -126,11 +127,11 @@ present such credentials.  For that reason the STIR threat model
 as a solution to these threats must, for example, limit the scope of
 the credentials issued to carriers or national authorities to those
 numbers that fall under their purview."  This document describes
-credential systems for telephone numbers based on {{?X.509}} version 3
+credential systems for telephone numbers based on {{X.509}} version 3
 certificates in accordance with {{?RFC5280}}.  While telephone numbers
 have long been part of the X.509 standard (X.509 supports arbitrary
 naming attributes to be included in a certificate; the
-telephoneNumber attribute was defined in the 1988 {{!X.520}}
+telephoneNumber attribute was defined in the 1988 {{X.520}}
 specification) this document provides ways to determine authority
 more aligned with telephone network requirements, including extending
 X.509 with a Telephone Number Authorization List certificate
@@ -265,7 +266,7 @@ certificate.
 credentials: for this specification, that means the signature
 algorithms used to sign certificates.  This specification
 REQUIRES that implementations support both ECDSA with the P-256
-curve (see {{!DSS}}) and RSA PKCS#1 v1.5 (see {{?RFC3447}} Section 8.2)
+curve (see {{DSS}}) and RSA PKCS#1 v1.5 (see {{?RFC3447}} Section 8.2)
 for certificate signatures.  Implementers are advised that RS256
 is mandated only as a transitional mechanism, due to its
 widespread use in existing PKI, but we anticipate that this
@@ -359,7 +360,7 @@ specified in PASSporT {{I-D.ietf-stir-passport}}.  This specification
 supports constraints on the JWT claims, which allows the CA to grant
 different permissions to certificate holders, for example those
 enrolled from proof-of-possession versus delegation.  A Certification
-Policy and a Certification Practice Statement {{RFC3647}} are produced
+Policy and a Certification Practice Statement {{?RFC3647}} are produced
 as part of the normal PKI bootstrapping process, (i.e., the CP is
 written first and then the CA says how it conforms to the CP in the
 CPS).  A CA that wishes to place constraints on the JWT claims MUST
@@ -474,8 +475,8 @@ specifying new claims follows the procedures in
 validating PASSporT claims, the JWT claim MUST contain permitted
 values.  The non-critical JWT Claim Constraints certificate extension
 is included in the extension field of end entity certificates
-{{RFC5280}}.  The extension is defined with ASN.1 {{?X.680}}{{?X.681}}
-{{X.682}}{{?X.683}}.
+{{RFC5280}}.  The extension is defined with ASN.1 {{X.680}}{{X.681}}
+{{X.682}}{{X.683}}.
 
 The JWT Claim Constraints certificate extension places constraints on
 the values that are allowed in particular JWT claims.  This
@@ -632,7 +633,7 @@ information.  This document makes no particular recommndation for a
 means of determinate certificate freshness for STIR, as this requires
 further study and implementation experience.  Acquiring online status
 information for certificates has the potential to disclose private
-information {{RFC7258}} if proper precautions are not taken.  Future
+information {{?RFC7258}} if proper precautions are not taken.  Future
 specifications that define certificate freshness mechanisms for STIR
 MUST note any such risks and provide countermeasures where possible.
 
