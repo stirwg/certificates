@@ -488,12 +488,14 @@ id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 25 }
 The JWT Claim Constraints certificate extension has the following
 syntax:
 
+~~~
 JWTClaimConstraints ::= SEQUENCE SIZE (1..MAX) OF JWTClaimConstraint
 
 JWTClaimConstraint ::= SEQUENCE {
   claim     IA5String,
   permitted SEQUENCE OF IA5String
   }
+~~~
 
 # TN Authorization List Syntax
 
@@ -527,6 +529,7 @@ id-pe-TNAuthList OBJECT IDENTIFIER ::= { id-pe 26 }
 The TN Authorization List certificate extension has the following
 syntax:
 
+~~~
 TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry
 
 TNEntry ::= CHOICE {
@@ -546,6 +549,7 @@ TelephoneNumberRange ::= SEQUENCE {
   }
 
 E164Number ::= IA5String (SIZE (1..15)) (FROM ("0123456789#*"))
+~~~
 
 The TN Authorization List certificate extension indicates the
 authorized phone numbers for the call setup signer.  It indicates one
@@ -714,6 +718,7 @@ specifications referred to here.
 
 This ASN.1 module imports ASN.1 from {{!RFC5912}}.
 
+~~~
 
 TN-Module-2016
   { iso(1) identified-organization(3) dod(6) internet(1) security(5)
@@ -787,4 +792,4 @@ E164Number ::= IA5String (SIZE (1..15)) (FROM ("0123456789"))
 id-ad-stirTNList OBJECT IDENTIFIER ::= { id-ad 14 }
 
 END
-
+~~~
