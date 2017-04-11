@@ -15,7 +15,7 @@ author:
   -
     ins: J. Peterson
     name: Jon Peterson
-    org: Neustar
+    org: Neustar, Inc.
     email: jon.peterson@neustar.biz
   -
     ins: S. Turner
@@ -85,7 +85,7 @@ managing telephone numbers as identities in protocols like SIP.
 
 # Introduction
 
-The STIR problem statement {{!RFC7340}} identifies the primary enabler
+The STIR problem statement {{?RFC7340}} identifies the primary enabler
 of robocalling, vishing, swatting and related attacks as the
 capability to impersonate a calling party number.  The starkest
 examples of these attacks are cases where automated callees on the
@@ -105,12 +105,12 @@ parties who control telephone numbers.  With these credentials,
 parties can assert that they are in fact authorized to use telephony
 numbers, and thus distinguish themselves from impersonators unable to
 present such credentials.  For that reason the STIR threat model
-{{!RFC7375}} stipulates, "The design of the credential system envisioned
+{{?RFC7375}} stipulates, "The design of the credential system envisioned
 as a solution to these threats must, for example, limit the scope of
 the credentials issued to carriers or national authorities to those
 numbers that fall under their purview."  This document describes
 credential systems for telephone numbers based on {{X.509}} version 3
-certificates in accordance with {{?RFC5280}}.  While telephone numbers
+certificates in accordance with {{!RFC5280}}.  While telephone numbers
 have long been part of the X.509 standard (X.509 supports arbitrary
 naming attributes to be included in a certificate; the
 telephoneNumber attribute was defined in the 1988 {{X.520}}
@@ -126,7 +126,7 @@ In the STIR in-band architecture specified in
 to these credentials: authentication services, and verification
 services (or verifiers).  An authentication service must be operated
 by an entity enrolled with the certification authority (CA, see
-Section 5), whereas a verifier need only trust the trust anchor of
+{{enrollment}}), whereas a verifier need only trust the trust anchor of
 the authority, and have a means to access and validate the public
 keys associated with these certificates.  Although the guidance in
 this document is written with the STIR in-band architecture in mind,
@@ -214,7 +214,7 @@ operational procedures that govern certificate use per {{RFC5280}}.
 This means that verification services must be mindful of the need to
 ensure that they trust the trust anchor that issued the certificate,
 and that they have some means to determine the freshness of the
-certificate (see Section 10).
+certificate (see {{cert-fresh}}).
 
 # Certificate Usage with STIR
 
@@ -223,10 +223,10 @@ systems used by STIR explain how they address the requirements
 enumerated below.  Certificates as described in this document address
 the STIR requirements as follows:
 
-1.  The URI {{?RFC3986}} schemes permitted in the SIP Identity header
+1.  The URI {{!RFC3986}} schemes permitted in the SIP Identity header
 "info" parameter, as well as any special procedures required to
 dereference the URIs: while normative text is given below in
-Section 7, this mechanism permits the HTTP {{?RFC7230}}, CID and SIP
+Section 7, this mechanism permits the HTTP {{!RFC7230}}, CID and SIP
 URI schemes to appear in the "info" parameter.
 
 2.  Procedures required to extract keying material from the resources
@@ -248,7 +248,7 @@ certificate.
 credentials: for this specification, that means the signature
 algorithms used to sign certificates.  This specification
 REQUIRES that implementations support both ECDSA with the P-256
-curve (see {{DSS}}) and RSA PKCS#1 v1.5 (see {{?RFC3447}} Section 8.2)
+curve (see {{DSS}}) and RSA PKCS#1 v1.5 (see {{!RFC3447}} Section 8.2)
 for certificate signatures.  Implementers are advised that RS256
 is mandated only as a transitional mechanism, due to its
 widespread use in existing PKI, but we anticipate that this
@@ -260,8 +260,8 @@ specification:
     *  MUST provide cryptographic keying material sufficient to
 generate the ECDSA using P-256 and SHA-256 signatures
 necessary to support the ES256 hashed signatures required by
-PASSporT {{?I-D.ietf-stir-passport}}, which in turn follows JSON
-Web Token (JWT) {{?RFC7519}}.
+PASSporT {{!I-D.ietf-stir-passport}}, which in turn follows JSON
+Web Token (JWT) {{!RFC7519}}.
 
     *  MUST support both ECDSA with P-256 and RSA PKCS#1 v1.5 for
 certificate signature verification.
@@ -279,7 +279,7 @@ acquiring credentials.
 certificate freshness and the Authority Information Access (AIA)
 certificate extension.
 
-# Enrollment and Authorization using the TN Authorization List
+# Enrollment and Authorization using the TN Authorization List {#enrollment}
 
 This document covers three models for enrollment when using the TN
 Authorization List extension.
@@ -403,9 +403,9 @@ and sign calls.
 
 The specification RECOMMENDS distribution of private keys through
 PKCS#8 objects signed by a trusted entity, for example through the
-CMS package specified in {{?RFC5958}}.
+CMS package specified in {{!RFC5958}}.
 
-# Acquiring Credentials to Verify Signatures
+# Acquiring Credentials to Verify Signatures {#cert-acquire}
 
 This specification documents multiple ways that a verifier can gain
 access to the credentials needed to verify a request.  As the
@@ -425,9 +425,9 @@ are REQUIRED: the CID URI, the SIP URI, and the HTTP URI.
 The simplest way for a verifier to acquire the certificate needed to
 verify a signature is for the certificate be conveyed in a SIP
 request along with the signature itself.  In SIP, for example, a
-certificate could be carried in a multipart MIME body {{!RFC2046}}, and
+certificate could be carried in a multipart MIME body {{?RFC2046}}, and
 the URI in the Identity header "info" parameter could specify that
-body with a CID URI {{?RFC2392}}.  However, in many environments this is
+body with a CID URI {{!RFC2392}}.  However, in many environments this is
 not feasible due to message size restrictions or lack of necessary
 support for multipart MIME.
 
@@ -481,25 +481,25 @@ Constraints, the issuer of the certificate permits all claims.
 
 The JWT Claim Constraints certificate extension is identified by the
 following object identifier (OID), which is defined under the id-pe
-OID arc defined in {{RFC5280}} and managed by IANA (see Section 11):
+OID arc defined in {{RFC5280}} and managed by IANA (see {{iana}}):
 
 ~~~
-id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 25 }
+  id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 25 }
 ~~~
 
 The JWT Claim Constraints certificate extension has the following
 syntax:
 
 ~~~
-JWTClaimConstraints ::= SEQUENCE SIZE (1..MAX) OF JWTClaimConstraint
+  JWTClaimConstraints ::= SEQUENCE SIZE (1..MAX) OF JWTClaimConstraint
 
-JWTClaimConstraint ::= SEQUENCE {
-  claim     IA5String,
-  permitted SEQUENCE OF IA5String
-  }
+  JWTClaimConstraint ::= SEQUENCE {
+    claim     IA5String,
+    permitted SEQUENCE OF IA5String
+    }
 ~~~
 
-# TN Authorization List Syntax
+# TN Authorization List Syntax {#tn-authz-list}
 
 The subjects of certificates containing the TN Authorization List
 extension are the administrative entities to whom numbers are
@@ -524,35 +524,35 @@ the set of TNs for certification paths that include this certificate.
 The Telephony Number (TN) Authorization List certificate extension is
 identified by the following object identifier (OID), which is defined
 under the id-pe OID arc defined in {{RFC5280}} and managed by IANA (see
-Section 11):
+{{iana}}):
 
 ~~~
-id-pe-TNAuthList OBJECT IDENTIFIER ::= { id-pe 26 }
+  id-pe-TNAuthList OBJECT IDENTIFIER ::= { id-pe 26 }
 ~~~
 
 The TN Authorization List certificate extension has the following
 syntax:
 
 ~~~
-TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry
+  TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry
 
-TNEntry ::= CHOICE {
-  spc   [0] ServiceProviderCodeList,
-  range [1] TelephoneNumberRange,
-  one       E164Number
-  }
+  TNEntry ::= CHOICE {
+    spc   [0] ServiceProviderCodeList,
+    range [1] TelephoneNumberRange,
+    one       E164Number
+    }
 
-ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String
+  ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String
 
--- Service Provider Codes may be OCNs, various SPIDs, or other
--- SP identifiers from the telephone network
+  -- Service Provider Codes may be OCNs, various SPIDs, or other
+  -- SP identifiers from the telephone network
 
-TelephoneNumberRange ::= SEQUENCE {
-  start E164Number,
-  count INTEGER
-  }
+  TelephoneNumberRange ::= SEQUENCE {
+    start E164Number,
+    count INTEGER
+    }
 
-E164Number ::= IA5String (SIZE (1..15)) (FROM ("0123456789#*"))
+  E164Number ::= IA5String (SIZE (1..15)) (FROM ("0123456789#*"))
 ~~~
 
 The TN Authorization List certificate extension indicates the
@@ -587,9 +587,9 @@ through the presence of a separate certificate extension that permits
 verifiers to either securely download the list of numbers associated
 with a certificate, or to verify that a single number is under the
 authority of this certificate.  For more on this optimization, see
-Section 10.1.
+{{acquire}}.
 
-# Certificate Freshness and Revocation
+# Certificate Freshness and Revocation {#cert-fresh}
 
 Regardless of which of the approaches in Section 3 is followed for
 using certificates, a certificate verification mechanism is required.
@@ -623,11 +623,11 @@ information.  This document makes no particular recommndation for a
 means of determinate certificate freshness for STIR, as this requires
 further study and implementation experience.  Acquiring online status
 information for certificates has the potential to disclose private
-information {{?RFC7258}} if proper precautions are not taken.  Future
+information {{!RFC7258}} if proper precautions are not taken.  Future
 specifications that define certificate freshness mechanisms for STIR
 MUST note any such risks and provide countermeasures where possible.
 
-##  Acquiring TN Lists By Reference
+##  Acquiring TN Lists By Reference {#acquire}
 
 One alternative to checking certificate status for a particular
 telephone number is simply acquiring the TN Authorization List by
@@ -651,13 +651,13 @@ certificate.  This document defines a new AIA accessMethod, called
 "id-ad-stirTNList", which uses the following AIA OID:
 
 ~~~
-id-ad-stirTNList  OBJECT IDENTIFIER ::= { id-ad 14 }
+  id-ad-stirTNList  OBJECT IDENTIFIER ::= { id-ad 14 }
 ~~~
 
 When the "id-ad-stirTNList" accessMethod is used, the accessLocation
 MUST be an HTTPS URI.  The document returned by dereferencing that
-URI will contain the complete TN Authorization List (see Section 9)
-for the certificate.
+URI will contain the complete TN Authorization List (see 
+{{tn-authz-list}}) for the certificate.
 
 Delivering the entire list of telephone numbers associated with a
 particular certificate will divulge to STIR verifiers information
@@ -667,7 +667,7 @@ where STIR verifiers handle a high volume of calls, maintaining an
 up-to-date and complete cache for the numbers associated with crucial
 certificate holders could give an important boost to performance.
 
-# IANA Considerations
+# IANA Considerations {#iana}
 
 This document makes use of object identifiers for the TN Certificate
 Extension defined in Section 9, the TN by reference AIA access
@@ -678,8 +678,10 @@ following assignments:
 * JWT Claim Constraints Certificate Extension in the SMI Security
 for PKIX Certificate Extension registry:
 
-http://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-
-numbers-1.3.6.1.5.5.7.1
+~~~
+    http://www.iana.org/assignments/smi-numbers/smi-numbers.xhtml#smi-
+    numbers-1.3.6.1.5.5.7.1
+~~~
 
 * TN Certificate Extension in the SMI Security for PKIX Certificate
 Extension registry: http://www.iana.org/assignments/smi-numbers/
@@ -709,7 +711,7 @@ module.
 
 --- back
 
-# Appendix A.  ASN.1 Module
+# ASN.1 Module
 
 This appendix provides the normative ASN.1 {{X.680}} definitions for
 the structures described in this specification using ASN.1, as
@@ -726,76 +728,76 @@ This ASN.1 module imports ASN.1 from {{!RFC5912}}.
 
 ~~~
 
-TN-Module-2016
-  { iso(1) identified-organization(3) dod(6) internet(1) security(5)
-    mechanisms(5) pkix(7) id-mod(0) id-mod-tn-module(88) }
+  TN-Module-2016
+    { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+      mechanisms(5) pkix(7) id-mod(0) id-mod-tn-module(88) }
 
-DEFINITIONS EXPLICIT TAGS ::= BEGIN
+  DEFINITIONS EXPLICIT TAGS ::= BEGIN
 
-IMPORTS
+  IMPORTS
 
-id-ad, id-pe
-FROM PKIX1Explicit-2009  -- From {{RFC5912}}
-  { iso(1) identified-organization(3) dod(6) internet(1) security(5)
-     mechanisms(5) pkix(7) id-mod(0) id-mod-pkix1-explicit-02(51) }
+  id-ad, id-pe
+  FROM PKIX1Explicit-2009  -- From [RFC5912]
+    { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+      mechanisms(5) pkix(7) id-mod(0) id-mod-pkix1-explicit-02(51) }
 
-EXTENSION
-FROM PKIX-CommonTypes-2009  -- From {{RFC5912}}
-  { iso(1) identified-organization(3) dod(6) internet(1) security(5)
-    mechanisms(5) pkix(7) id-mod(0) id-mod-pkixCommon-02(57) }
+  EXTENSION
+  FROM PKIX-CommonTypes-2009  -- From [RFC5912]
+    { iso(1) identified-organization(3) dod(6) internet(1) security(5)
+      mechanisms(5) pkix(7) id-mod(0) id-mod-pkixCommon-02(57) }
 
-;
+  ;
 
---
--- JWT Claim Constraints Certificate Extension
---
+  --
+  -- JWT Claim Constraints Certificate Extension
+  --
 
-ext-jwtClaimConstraints EXTENSION  ::= {
-  SYNTAX JWTClaimConstraints IDENTIFIED BY id-pe-JWTClaimConstraints
-}
+  ext-jwtClaimConstraints EXTENSION  ::= {
+    SYNTAX JWTClaimConstraints IDENTIFIED BY id-pe-JWTClaimConstraints
+    } 
 
-id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 25 }
+  id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 25 }
 
-JWTClaimConstraints ::= SEQUENCE SIZE (1..MAX) OF JWTClaimConstraint
+  JWTClaimConstraints ::= SEQUENCE SIZE (1..MAX) OF JWTClaimConstraint
 
-JWTClaimConstraint ::= SEQUENCE {
-  claim     IA5String,
-  permitted SEQUENCE OF IA5String
-  }
+  JWTClaimConstraint ::= SEQUENCE {
+    claim     IA5String,
+    permitted SEQUENCE OF IA5String
+    }
 
---
--- Telephone Number Authorization List Certificate Extension
---
+  --
+  -- Telephone Number Authorization List Certificate Extension
+  --
 
-ext-tnAuthList  EXTENSION  ::= {
-  SYNTAX TNAuthorizationList IDENTIFIED BY id-pe-TNAuthList
-  }
+  ext-tnAuthList  EXTENSION  ::= {
+    SYNTAX TNAuthorizationList IDENTIFIED BY id-pe-TNAuthList
+    }
 
-id-pe-TNAuthList OBJECT IDENTIFIER ::= { id-pe 26 }
+  id-pe-TNAuthList OBJECT IDENTIFIER ::= { id-pe 26 }
 
-TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry
+  TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry
 
-TNEntry ::= CHOICE {
-  spc    [0] ServiceProviderCodeList,
-  range  [1] TelephoneNumberRange,
-  one        E164Number
-  }
+  TNEntry ::= CHOICE {
+    spc    [0] ServiceProviderCodeList,
+    range  [1] TelephoneNumberRange,
+    one        E164Number
+    }
 
-ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String
+  ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String
 
--- Service Provider Codes may be OCNs, various SPIDs, or other
--- SP identifiers from the telephone network
+  -- Service Provider Codes may be OCNs, various SPIDs, or other
+  -- SP identifiers from the telephone network
 
-TelephoneNumberRange ::= SEQUENCE {
-  start E164Number,
-  count INTEGER
-  }
+  TelephoneNumberRange ::= SEQUENCE {
+    start E164Number,
+    count INTEGER
+    }
 
-E164Number ::= IA5String (SIZE (1..15)) (FROM ("0123456789"))
+  E164Number ::= IA5String (SIZE (1..15)) (FROM ("0123456789"))
 
--- TN Access Descriptor
+  -- TN Access Descriptor
 
-id-ad-stirTNList OBJECT IDENTIFIER ::= { id-ad 14 }
+  id-ad-stirTNList OBJECT IDENTIFIER ::= { id-ad 14 }
 
-END
+  END
 ~~~
