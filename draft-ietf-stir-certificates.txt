@@ -3,13 +3,13 @@
 
 
 STIR                                                         J. Peterson
-Internet-Draft                                             Neustar, Inc.
+Internet-Draft                                                   Neustar
 Intended status: Standards Track                               S. Turner
 Expires: October 13, 2017                                          sn3rd
                                                           April 11, 2017
 
 
-          Secure Telephone Identity Credentials - Certificates
+          Secure Telephone Identity Credentials: Certificates
                   draft-ietf-stir-certificates-latest
 
 Abstract
