@@ -1,5 +1,5 @@
 ---
-title: Secure Telephone Identity Credentials - Certificates
+title: "Secure Telephone Identity Credentials: Certificates"
 abbrev: STIR Certs
 docname: draft-ietf-stir-certificates-latest
 date: {DATE}
@@ -16,6 +16,7 @@ author:
     ins: J. Peterson
     name: Jon Peterson
     org: Neustar, Inc.
+    abbrev: Neustar
     email: jon.peterson@neustar.biz
   -
     ins: S. Turner
