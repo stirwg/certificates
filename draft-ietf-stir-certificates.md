@@ -510,6 +510,8 @@ syntax:
     permitted  SEQUENCE SIZE (1..MAX) OF UTF8String }
 
   JWTClaimNames ::= SEQUENCE SIZE (1..MAX) OF JWTClaimName
+
+  JWTClaimName ::= IA5String
 ~~~
 
 # TN Authorization List Syntax {#tn-authz-list}
@@ -790,6 +792,8 @@ This ASN.1 module imports ASN.1 from {{!RFC5912}}.
     permitted  SEQUENCE SIZE (1..MAX) OF UTF8String }
  
   JWTClaimNames ::= SEQUENCE SIZE (1..MAX) OF JWTClaimName
+
+  JWTClaimName ::= IA5String
 
   --
   -- Telephone Number Authorization List Certificate Extension
