@@ -550,7 +550,7 @@ syntax:
 
   TelephoneNumberRange ::= SEQUENCE {
     start E164Number,
-    count INTEGER
+    count INTEGER (2..MAX)
     }
 
   E164Number ::= IA5String (SIZE (1..15)) (FROM ("0123456789#*"))
@@ -791,7 +791,7 @@ This ASN.1 module imports ASN.1 from {{!RFC5912}}.
 
   TelephoneNumberRange ::= SEQUENCE {
     start E164Number,
-    count INTEGER
+    count INTEGER (2..MAX)
     }
 
   E164Number ::= IA5String (SIZE (1..15)) (FROM ("0123456789"))
