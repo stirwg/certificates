@@ -540,7 +540,7 @@ syntax:
   TNEntry ::= CHOICE {
     spc   [0] ServiceProviderCodeList,
     range [1] TelephoneNumberRange,
-    one       E164Number
+    one       TelephoneNumber
     }
 
   ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String
@@ -549,11 +549,11 @@ syntax:
   -- SP identifiers from the telephone network
 
   TelephoneNumberRange ::= SEQUENCE {
-    start DTMFNumber,
+    start TelephoneNumber,
     count INTEGER
     }
 
-  DTMFNumber ::= IA5String (SIZE (1..15)) (FROM ("0123456789#*"))
+  TelephoneNumber ::= IA5String (SIZE (1..15)) (FROM ("0123456789#*"))
 ~~~
 
 The TN Authorization List certificate extension indicates the
@@ -577,7 +577,7 @@ telephone number and then an integer count of numbers within the
 range, where the valid boundaries of ranges may vary according to
 national policies, or
 
-3.  A single telephone number can be listed (as a DTMFNumber).
+3.  A single telephone number can be listed (as a TelephoneNumber).
 
 Note that because large-scale service providers may want to associate
 many numbers, possibly millions of numbers, with a particular
@@ -781,7 +781,7 @@ This ASN.1 module imports ASN.1 from {{!RFC5912}}.
   TNEntry ::= CHOICE {
     spc    [0] ServiceProviderCodeList,
     range  [1] TelephoneNumberRange,
-    one        DTMFNumber
+    one        TelephoneNumber
     }
 
   ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String
@@ -790,11 +790,11 @@ This ASN.1 module imports ASN.1 from {{!RFC5912}}.
   -- SP identifiers from the telephone network
 
   TelephoneNumberRange ::= SEQUENCE {
-    start DTMFNumber,
+    start TelephoneNumber,
     count INTEGER
     }
 
-  DTMFNumber ::= IA5String (SIZE (1..15)) (FROM ("0123456789"))
+  TelephoneNumber ::= IA5String (SIZE (1..15)) (FROM ("0123456789"))
 
   -- TN Access Descriptor
 
