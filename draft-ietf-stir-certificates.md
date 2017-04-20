@@ -543,7 +543,7 @@ syntax:
     one       E164Number
     }
 
-  ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String
+  ServiceProviderCodeList ::= IA5String
 
   -- Service Provider Codes may be OCNs, various SPIDs, or other
   -- SP identifiers from the telephone network
@@ -784,7 +784,7 @@ This ASN.1 module imports ASN.1 from {{!RFC5912}}.
     one        E164Number
     }
 
-  ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String
+  ServiceProviderCodeList ::= IA5String
 
   -- Service Provider Codes may be OCNs, various SPIDs, or other
   -- SP identifiers from the telephone network
