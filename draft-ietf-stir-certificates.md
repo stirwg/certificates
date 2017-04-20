@@ -538,7 +538,7 @@ syntax:
   TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry
 
   TNEntry ::= CHOICE {
-    spc   [0] ServiceProviderList,
+    spc   [0] ServiceProviderCode,
     range [1] TelephoneNumberRange,
     one       E164Number
     }
