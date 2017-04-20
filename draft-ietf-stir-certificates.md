@@ -540,7 +540,7 @@ syntax:
   TNEntry ::= CHOICE {
     spc   [0] ServiceProviderCode,
     range [1] TelephoneNumberRange,
-    one       E164Number
+    one   [2] E164Number
     }
 
   ServiceProviderCode ::= IA5String
@@ -781,7 +781,7 @@ This ASN.1 module imports ASN.1 from {{!RFC5912}}.
   TNEntry ::= CHOICE {
     spc    [0] ServiceProviderCode,
     range  [1] TelephoneNumberRange,
-    one        E164Number
+    one    [2] E164Number
     }
 
   ServiceProviderCode ::= IA5String
