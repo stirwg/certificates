@@ -538,12 +538,12 @@ syntax:
   TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry
 
   TNEntry ::= CHOICE {
-    spc   [0] ServiceProviderCodeList,
+    spc   [0] ServiceProviderCode,
     range [1] TelephoneNumberRange,
-    one       TelephoneNumber
+    one   [2] TelephoneNumber
     }
 
-  ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String
+  ServiceProviderCode ::= IA5String
 
   -- Service Provider Codes may be OCNs, various SPIDs, or other
   -- SP identifiers from the telephone network
@@ -779,12 +779,12 @@ This ASN.1 module imports ASN.1 from {{!RFC5912}}.
   TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry
 
   TNEntry ::= CHOICE {
-    spc    [0] ServiceProviderCodeList,
+    spc    [0] ServiceProviderCode,
     range  [1] TelephoneNumberRange,
-    one        TelephoneNumber
+    one    [2] TelephoneNumber
     }
 
-  ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String
+  ServiceProviderCode ::= IA5String
 
   -- Service Provider Codes may be OCNs, various SPIDs, or other
   -- SP identifiers from the telephone network
