@@ -549,7 +549,7 @@ syntax:
   -- SP identifiers from the telephone network
 
   TelephoneNumberRange ::= SEQUENCE {
-    start E164Number,
+    start TelephoneNumber,
     count INTEGER (2..MAX)
     }
 
@@ -790,7 +790,7 @@ This ASN.1 module imports ASN.1 from {{!RFC5912}}.
   -- SP identifiers from the telephone network
 
   TelephoneNumberRange ::= SEQUENCE {
-    start E164Number,
+    start TelephoneNumber,
     count INTEGER (2..MAX)
     }
 
