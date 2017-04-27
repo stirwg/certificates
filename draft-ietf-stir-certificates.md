@@ -460,7 +460,7 @@ The syntax of the claims is given in PASSporT; specifying new claims
 follows the procedures in {{I-D.ietf-stir-passport}} (Section 8.3).
 
 This certificate extension is optional, but if present, it constrains
-the claims that authentication services may included in the PASSporT
+the claims that authentication services may include in the PASSporT
 objects they sign.  Constraints are applied by issuers and enforced by
 verifiers when validating PASSporT claims as follows:
 
