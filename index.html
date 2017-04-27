@@ -305,7 +305,7 @@ address {
 
   <meta name="dct.creator" content="Peterson, J. and S. Turner" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-stir-certificates-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-4-11" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-4-27" />
   <meta name="dct.abstract" content="In order to prevent the impersonation of telephone numbers on the Internet, some kind of credential system needs to exist that cryptographically asserts authority over telephone numbers.  This document describes the use of certificates in establishing authority over telephone numbers, as a component of a broader architecture for managing telephone numbers as identities in protocols like SIP." />
   <meta name="description" content="In order to prevent the impersonation of telephone numbers on the Internet, some kind of credential system needs to exist that cryptographically asserts authority over telephone numbers.  This document describes the use of certificates in establishing authority over telephone numbers, as a component of a broader architecture for managing telephone numbers as identities in protocols like SIP." />
 
@@ -329,12 +329,12 @@ address {
   <td class="right">S. Turner</td>
 </tr>
 <tr>
-  <td class="left">Expires: October 13, 2017</td>
+  <td class="left">Expires: October 29, 2017</td>
   <td class="right">sn3rd</td>
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">April 11, 2017</td>
+  <td class="right">April 27, 2017</td>
 </tr>
 
     	
@@ -354,7 +354,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on October 13, 2017.</p>
+<p>This Internet-Draft will expire on October 29, 2017.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -471,22 +471,22 @@ address {
   TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry
 
   TNEntry ::= CHOICE {
-    spc   [0] ServiceProviderCodeList,
+    spc   [0] ServiceProviderCode,
     range [1] TelephoneNumberRange,
-    one       E164Number
+    one   [2] TelephoneNumber
     }
 
-  ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String
+  ServiceProviderCode ::= IA5String
 
   -- Service Provider Codes may be OCNs, various SPIDs, or other
   -- SP identifiers from the telephone network
 
   TelephoneNumberRange ::= SEQUENCE {
-    start E164Number,
-    count INTEGER
+    start TelephoneNumber,
+    count INTEGER (2..MAX)
     }
 
-  E164Number ::= IA5String (SIZE (1..15)) (FROM ("0123456789#*"))
+  TelephoneNumber ::= IA5String (SIZE (1..15)) (FROM ("0123456789#*"))
 </pre>
 <p id="rfc.section.9.p.5">The TN Authorization List certificate extension indicates the authorized phone numbers for the call setup signer.  It indicates one or more blocks of telephone number entries that have been authorized for use by the call setup signer.  There are three ways to identify the block:</p>
 <p/>
@@ -494,7 +494,7 @@ address {
 <ol>
   <li>Service Provider Codes as described in this document are a generic term for the identifiers used to designate service providers in the telepohone networks today.  In North American context, these would include Operating Company Numbers (OCNs) as specified in <a href="#ATIS-0300251">[ATIS-0300251]</a>, related Service Provide Identifiers (SPIDs), or other similar identifiers for service providers.  SPCs can be used to indirectly name all of the telephone numbers associated with that identifier for a service provider,</li>
   <li>Telephone numbers can be listed in a range (in the TelephoneNumberRange format), which consists of a starting telephone number and then an integer count of numbers within the range, where the valid boundaries of ranges may vary according to national policies, or</li>
-  <li>A single telephone number can be listed (as an E164Number).</li>
+  <li>A single telephone number can be listed (as a TelephoneNumber).</li>
 </ol>
 <p id="rfc.section.9.p.7">Note that because large-scale service providers may want to associate many numbers, possibly millions of numbers, with a particular certificate, optimizations are required for those cases to prevent certificate size from becoming unmanageable.  In these cases, the TN Authorization List may be given by reference rather than by value, through the presence of a separate certificate extension that permits verifiers to either securely download the list of numbers associated with a certificate, or to verify that a single number is under the authority of this certificate.  For more on this optimization, see <a href="#acquire">Section 10.1</a>.</p>
 <h1 id="rfc.section.10"><a href="#rfc.section.10">10.</a> <a href="#cert-fresh" id="cert-fresh">Certificate Freshness and Revocation</a></h1>
@@ -744,22 +744,22 @@ address {
   TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry
 
   TNEntry ::= CHOICE {
-    spc    [0] ServiceProviderCodeList,
+    spc    [0] ServiceProviderCode,
     range  [1] TelephoneNumberRange,
-    one        E164Number
+    one    [2] TelephoneNumber
     }
 
-  ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String
+  ServiceProviderCode ::= IA5String
 
   -- Service Provider Codes may be OCNs, various SPIDs, or other
   -- SP identifiers from the telephone network
 
   TelephoneNumberRange ::= SEQUENCE {
-    start E164Number,
-    count INTEGER
+    start TelephoneNumber,
+    count INTEGER (2..MAX)
     }
 
-  E164Number ::= IA5String (SIZE (1..15)) (FROM ("0123456789"))
+  TelephoneNumber ::= IA5String (SIZE (1..15)) (FROM ("0123456789"))
 
   -- TN Access Descriptor
 

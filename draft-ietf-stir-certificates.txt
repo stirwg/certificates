@@ -5,8 +5,8 @@
 STIR                                                         J. Peterson
 Internet-Draft                                                   Neustar
 Intended status: Standards Track                               S. Turner
-Expires: October 13, 2017                                          sn3rd
-                                                          April 11, 2017
+Expires: October 29, 2017                                          sn3rd
+                                                          April 27, 2017
 
 
           Secure Telephone Identity Credentials: Certificates
@@ -36,7 +36,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on October 13, 2017.
+   This Internet-Draft will expire on October 29, 2017.
 
 Copyright Notice
 
@@ -53,7 +53,7 @@ Copyright Notice
 
 
 
-Peterson & Turner       Expires October 13, 2017                [Page 1]
+Peterson & Turner       Expires October 29, 2017                [Page 1]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Peterson & Turner       Expires October 13, 2017                [Page 2]
+Peterson & Turner       Expires October 29, 2017                [Page 2]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -165,7 +165,7 @@ Internet-Draft                 STIR Certs                     April 2017
 
 
 
-Peterson & Turner       Expires October 13, 2017                [Page 3]
+Peterson & Turner       Expires October 29, 2017                [Page 3]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -221,7 +221,7 @@ Internet-Draft                 STIR Certs                     April 2017
 
 
 
-Peterson & Turner       Expires October 13, 2017                [Page 4]
+Peterson & Turner       Expires October 29, 2017                [Page 4]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -277,7 +277,7 @@ Internet-Draft                 STIR Certs                     April 2017
 
 
 
-Peterson & Turner       Expires October 13, 2017                [Page 5]
+Peterson & Turner       Expires October 29, 2017                [Page 5]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -333,7 +333,7 @@ Internet-Draft                 STIR Certs                     April 2017
 
 
 
-Peterson & Turner       Expires October 13, 2017                [Page 6]
+Peterson & Turner       Expires October 29, 2017                [Page 6]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -389,7 +389,7 @@ Internet-Draft                 STIR Certs                     April 2017
 
 
 
-Peterson & Turner       Expires October 13, 2017                [Page 7]
+Peterson & Turner       Expires October 29, 2017                [Page 7]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -445,7 +445,7 @@ Internet-Draft                 STIR Certs                     April 2017
 
 
 
-Peterson & Turner       Expires October 13, 2017                [Page 8]
+Peterson & Turner       Expires October 29, 2017                [Page 8]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -501,7 +501,7 @@ Internet-Draft                 STIR Certs                     April 2017
 
 
 
-Peterson & Turner       Expires October 13, 2017                [Page 9]
+Peterson & Turner       Expires October 29, 2017                [Page 9]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -557,7 +557,7 @@ Internet-Draft                 STIR Certs                     April 2017
 
 
 
-Peterson & Turner       Expires October 13, 2017               [Page 10]
+Peterson & Turner       Expires October 29, 2017               [Page 10]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -613,30 +613,30 @@ Internet-Draft                 STIR Certs                     April 2017
 
 
 
-Peterson & Turner       Expires October 13, 2017               [Page 11]
+Peterson & Turner       Expires October 29, 2017               [Page 11]
 
 Internet-Draft                 STIR Certs                     April 2017
 
 
-     TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry
+    TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry
 
-     TNEntry ::= CHOICE {
-       spc   [0] ServiceProviderCodeList,
-       range [1] TelephoneNumberRange,
-       one       E164Number
-       }
+    TNEntry ::= CHOICE {
+      spc   [0] ServiceProviderCode,
+      range [1] TelephoneNumberRange,
+      one   [2] TelephoneNumber
+      }
 
-     ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String
+    ServiceProviderCode ::= IA5String
 
-     -- Service Provider Codes may be OCNs, various SPIDs, or other
-     -- SP identifiers from the telephone network
+    -- Service Provider Codes may be OCNs, various SPIDs, or other
+    -- SP identifiers from the telephone network
 
-     TelephoneNumberRange ::= SEQUENCE {
-       start E164Number,
-       count INTEGER
-       }
+    TelephoneNumberRange ::= SEQUENCE {
+      start TelephoneNumber,
+      count INTEGER (2..MAX)
+      }
 
-     E164Number ::= IA5String (SIZE (1..15)) (FROM ("0123456789#*"))
+    TelephoneNumber ::= IA5String (SIZE (1..15)) (FROM ("0123456789#*"))
 
    The TN Authorization List certificate extension indicates the
    authorized phone numbers for the call setup signer.  It indicates one
@@ -659,7 +659,7 @@ Internet-Draft                 STIR Certs                     April 2017
        range, where the valid boundaries of ranges may vary according to
        national policies, or
 
-   3.  A single telephone number can be listed (as an E164Number).
+   3.  A single telephone number can be listed (as a TelephoneNumber).
 
    Note that because large-scale service providers may want to associate
    many numbers, possibly millions of numbers, with a particular
@@ -669,7 +669,7 @@ Internet-Draft                 STIR Certs                     April 2017
 
 
 
-Peterson & Turner       Expires October 13, 2017               [Page 12]
+Peterson & Turner       Expires October 29, 2017               [Page 12]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -725,7 +725,7 @@ Internet-Draft                 STIR Certs                     April 2017
 
 
 
-Peterson & Turner       Expires October 13, 2017               [Page 13]
+Peterson & Turner       Expires October 29, 2017               [Page 13]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -781,7 +781,7 @@ Internet-Draft                 STIR Certs                     April 2017
 
 
 
-Peterson & Turner       Expires October 13, 2017               [Page 14]
+Peterson & Turner       Expires October 29, 2017               [Page 14]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -837,7 +837,7 @@ Internet-Draft                 STIR Certs                     April 2017
 
 
 
-Peterson & Turner       Expires October 13, 2017               [Page 15]
+Peterson & Turner       Expires October 29, 2017               [Page 15]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -893,7 +893,7 @@ Internet-Draft                 STIR Certs                     April 2017
 
 
 
-Peterson & Turner       Expires October 13, 2017               [Page 16]
+Peterson & Turner       Expires October 29, 2017               [Page 16]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -949,7 +949,7 @@ Internet-Draft                 STIR Certs                     April 2017
 
 
 
-Peterson & Turner       Expires October 13, 2017               [Page 17]
+Peterson & Turner       Expires October 29, 2017               [Page 17]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -1005,7 +1005,7 @@ Appendix A.  ASN.1 Module
 
 
 
-Peterson & Turner       Expires October 13, 2017               [Page 18]
+Peterson & Turner       Expires October 29, 2017               [Page 18]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -1030,22 +1030,22 @@ Internet-Draft                 STIR Certs                     April 2017
     TNAuthorizationList ::= SEQUENCE SIZE (1..MAX) OF TNEntry
 
     TNEntry ::= CHOICE {
-      spc    [0] ServiceProviderCodeList,
+      spc    [0] ServiceProviderCode,
       range  [1] TelephoneNumberRange,
-      one        E164Number
+      one    [2] TelephoneNumber
       }
 
-    ServiceProviderCodeList ::= SEQUENCE SIZE (1..3) OF IA5String
+    ServiceProviderCode ::= IA5String
 
     -- Service Provider Codes may be OCNs, various SPIDs, or other
     -- SP identifiers from the telephone network
 
     TelephoneNumberRange ::= SEQUENCE {
-      start E164Number,
-      count INTEGER
+      start TelephoneNumber,
+      count INTEGER (2..MAX)
       }
 
-    E164Number ::= IA5String (SIZE (1..15)) (FROM ("0123456789"))
+    TelephoneNumber ::= IA5String (SIZE (1..15)) (FROM ("0123456789"))
 
     -- TN Access Descriptor
 
@@ -1061,7 +1061,7 @@ Authors' Addresses
 
 
 
-Peterson & Turner       Expires October 13, 2017               [Page 19]
+Peterson & Turner       Expires October 29, 2017               [Page 19]
 
 Internet-Draft                 STIR Certs                     April 2017
 
@@ -1117,4 +1117,4 @@ Internet-Draft                 STIR Certs                     April 2017
 
 
 
-Peterson & Turner       Expires October 13, 2017               [Page 20]
+Peterson & Turner       Expires October 29, 2017               [Page 20]
