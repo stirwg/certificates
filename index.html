@@ -305,7 +305,7 @@ address {
 
   <meta name="dct.creator" content="Peterson, J. and S. Turner" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-ietf-stir-certificates-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-4-27" />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-4-28" />
   <meta name="dct.abstract" content="In order to prevent the impersonation of telephone numbers on the Internet, some kind of credential system needs to exist that cryptographically asserts authority over telephone numbers.  This document describes the use of certificates in establishing authority over telephone numbers, as a component of a broader architecture for managing telephone numbers as identities in protocols like SIP." />
   <meta name="description" content="In order to prevent the impersonation of telephone numbers on the Internet, some kind of credential system needs to exist that cryptographically asserts authority over telephone numbers.  This document describes the use of certificates in establishing authority over telephone numbers, as a component of a broader architecture for managing telephone numbers as identities in protocols like SIP." />
 
@@ -329,12 +329,12 @@ address {
   <td class="right">S. Turner</td>
 </tr>
 <tr>
-  <td class="left">Expires: October 29, 2017</td>
+  <td class="left">Expires: October 30, 2017</td>
   <td class="right">sn3rd</td>
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">April 27, 2017</td>
+  <td class="right">April 28, 2017</td>
 </tr>
 
     	
@@ -354,7 +354,7 @@ address {
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on October 29, 2017.</p>
+<p>This Internet-Draft will expire on October 30, 2017.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -444,20 +444,48 @@ address {
 <p id="rfc.section.7.p.3">The Identity header &#8220;info&#8221; parameter in a SIP request may contain a URI that the verifier dereferences.  Implementations of this specification are REQUIRED to support the use of SIP for this function (via the SUBSCRIBE/NOTIFY mechanism) as well as HTTP and HTTPS.</p>
 <p id="rfc.section.7.p.4">Note well that as an optimization, a verifier may have access to a service, a cache or other local store that grants access to certificates for a particular telephone number.  However, there may be multiple valid certificates that can sign a call setup request for a telephone number, and as a consequence, there needs to be some discriminator that the signer uses to identify their credentials.  The Identity header &#8220;info&#8221; parameter itself can serve as such a discriminator, provided implementations use that parameter as a key when accessing certificates from caches or other sources.</p>
 <h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#jwt-claim-constraints-syntax" id="jwt-claim-constraints-syntax">JWT Claim Constraints Syntax</a></h1>
-<p id="rfc.section.8.p.1">The subjects of certificates containing the JWT Claim Constraints certificate extension are specifies values for PASSporT claims that are permitted.  The syntax of these claims is given in PASSporT; specifying new claims follows the procedures in <a href="#I-D.ietf-stir-passport">[I-D.ietf-stir-passport]</a> (Section 8.3).  When a verifier is validating PASSporT claims, the JWT claim MUST contain permitted values.  The non-critical JWT Claim Constraints certificate extension is included in the extension field of end entity certificates <a href="#RFC5280">[RFC5280]</a>.  The extension is defined with ASN.1 <a href="#X.680">[X.680]</a><a href="#X.681">[X.681]</a> <a href="#X.682">[X.682]</a><a href="#X.683">[X.683]</a>.</p>
-<p id="rfc.section.8.p.2">The JWT Claim Constraints certificate extension places constraints on the values that are allowed in particular JWT claims.  This certificate extension is optional, but if present, it constrains the claims that authentication services may included in the PASSporT objects they sign.  For example, imagine a PASSporT extension claim called &#8220;confidence&#8221; with values &#8220;low&#8221;, &#8220;medium&#8221;, and &#8220;high&#8221;.  If a CA issues to an authentication service a certificate that contains the value &#8220;confidence&#8221; in the &#8220;claim&#8221; field and &#8220;high&#8221; in the &#8220;permitted&#8221; feild of the JWT Claim Constraints, then an authentication service MAY add a &#8220;high&#8221; &#8220;confidence&#8221; claim to any PASSporTs it generates.  A verification service MUST treat as invalid any PASSporT it receives with a PASSporT extension claim that is not included in JWT Claim Constraints.  The baseline claims of PASSporT (&#8220;orig&#8221;, &#8220;dest&#8221;, &#8220;iat&#8221; and &#8220;mky&#8221;) are considered to be permitted by default and SHOULD NOT be included in the &#8220;claim&#8221; field.  The issuer of a certificate may similarly explicitly allow the use of a particular claim by the holder of the certificate.  If a certificate contains no JWT Claim Constraints, the issuer of the certificate permits all claims.</p>
-<p id="rfc.section.8.p.3">The JWT Claim Constraints certificate extension is identified by the following object identifier (OID), which is defined under the id-pe OID arc defined in <a href="#RFC5280">[RFC5280]</a> and managed by IANA (see <a href="#iana">Section 11</a>):</p>
+<p id="rfc.section.8.p.1">Certificate subjects are limited to specific values for PASSporT claims with the JWT Claim Constraints certificate extension; issuers permit all claims by omitting the JWT Claim Constraints certificate extension from the certificate&#8217;s extension field <a href="#RFC5280">[RFC5280]</a>.  The extension is non-critical, applicable only to end-entity certificates, and defined with ASN.1 <a href="#X.680">[X.680]</a><a href="#X.681">[X.681]</a><a href="#X.682">[X.682]</a><a href="#X.683">[X.683]</a> later in this section.  The syntax of the claims is given in PASSporT; specifying new claims follows the procedures in <a href="#I-D.ietf-stir-passport">[I-D.ietf-stir-passport]</a> (Section 8.3).</p>
+<p id="rfc.section.8.p.2">This certificate extension is optional, but if present, it constrains the claims that authentication services may include in the PASSporT objects they sign.  Constraints are applied by issuers and enforced by verifiers when validating PASSporT claims as follows:</p>
+<p/>
+
+<ol>
+  <li>mustInclude indicates claims that MUST appear in the PASSporT in addition to iat, orig, and dest.  The baseline claims of PASSporT (&#8220;iat&#8221;, &#8220;orig&#8221;, and &#8220;dest&#8221;) are considered to be permitted by default and SHOULD NOT be included.  If mustInclude is absent, iat, orig, and dest MUST appear in the PASSporT.</li>
+  <li>permittedValues indicates that if the claim name is present, the claim MUST contain one of the listed values.</li>
+</ol>
+<p id="rfc.section.8.p.4">Consider two examples with a PASSporT claim called &#8220;confidence&#8221; with values &#8220;low&#8221;, &#8220;medium&#8221;, and  &#8220;high&#8221;:</p>
+<p/>
+
+<ul>
+  <li>If a CA issues to an authentication service a certificate that contains the mustInclude JWTClaimName &#8220;confidence&#8221;, then an authentication service MUST include the &#8220;confidence&#8221; claim in all PASSporTs it generates; a verification service will treat as invalid any PASSporT it receives with a PASSporT claim that does not include the &#8220;confidence&#8221; claim.</li>
+  <li>If a CA issues to an authentication service a certificate that contains the permittedValues JWTClaimName &#8220;confidence&#8221; and a permitted &#8220;high&#8221; value, then an authentication service will treat as invalid any PASSporT it receives with  a PASSporT claim that does not include the &#8220;confidence&#8221; claim with a &#8220;high&#8221; value.</li>
+</ul>
+<p id="rfc.section.8.p.6">The JWT Claim Constraints certificate extension is identified by the following object identifier (OID), which is defined under the id-pe OID arc defined in <a href="#RFC5280">[RFC5280]</a> and managed by IANA (see <a href="#iana">Section 11</a>):</p>
 <pre>
   id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 25 }
 </pre>
-<p id="rfc.section.8.p.4">The JWT Claim Constraints certificate extension has the following syntax:</p>
+<p id="rfc.section.8.p.7">The JWT Claim Constraints certificate extension has the following syntax:</p>
 <pre>
-  JWTClaimConstraints ::= SEQUENCE SIZE (1..MAX) OF JWTClaimConstraint
+  JWTClaimConstraints ::= SEQUENCE {
+    mustInclude [0] JWTClaimNames OPTIONAL,
+      -- The listed claim names MUST appear in the PASSporT in addition
+      -- to iat, orig, and dest.  If absent, iat, orig, and dest MUST
+      -- appear in the PASSporT.
+    permittedValues [1] JWTClaimPermittedValuesList OPTIONAL }
+      -- If the claim name is present, the claim MUST contain one of
+      -- the listed values.
+  ( WITH COMPONENTS { ..., mustInclude PRESENT } |
+    WITH COMPONENTS { ..., permittedValues PRESENT } )
 
-  JWTClaimConstraint ::= SEQUENCE {
-    claim     IA5String,
-    permitted SEQUENCE OF IA5String
-    }
+  JWTClaimPermittedValuesList ::= SEQUENCE SIZE (1..MAX) OF
+                                    JWTClaimPermittedValues
+
+  JWTClaimPermittedValues ::= SEQUENCE {
+    claim  JWTClaimName,
+    permitted  SEQUENCE SIZE (1..MAX) OF UTF8String }
+
+  JWTClaimNames ::= SEQUENCE SIZE (1..MAX) OF JWTClaimName
+
+  JWTClaimName ::= IA5String
 </pre>
 <h1 id="rfc.section.9"><a href="#rfc.section.9">9.</a> <a href="#tn-authz-list" id="tn-authz-list">TN Authorization List Syntax</a></h1>
 <p id="rfc.section.9.p.1">The subjects of certificates containing the TN Authorization List extension are the administrative entities to whom numbers are assigned or delegated.  When a verifier is validating a caller&#8217;s identity, local policy always determines the circumstances under which any particular subject may be trusted, but the purpose of the TN Authorization List extension in particular is to allow a verifier to ascertain when the CA has designated that the subject has authority over a particular telephone number or number range.  The non critical Telephony Number (TN) Authorization List certificate extension is included in the Certificate&#8217;s extension field <a href="#RFC5280">[RFC5280]</a>.  The extension is defined with ASN.1 <a href="#X.680">[X.680]</a><a href="#X.681">[X.681]</a><a href="#X.682">[X.682]</a> <a href="#X.683">[X.683]</a>.  What follows is the syntax and semantics of the extension.</p>
@@ -724,12 +752,27 @@ address {
 
   id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 25 }
 
-  JWTClaimConstraints ::= SEQUENCE SIZE (1..MAX) OF JWTClaimConstraint
+  JWTClaimConstraints ::= SEQUENCE {
+    mustInclude [0] JWTClaimNames OPTIONAL,
+      -- The listed claim names MUST appear in the PASSporT in addition
+      -- to iat, orig, and dest.  If absent, iat, orig, and dest MUST
+      -- appear in the PASSporT.
+    permittedValues [1] JWTClaimPermittedValuesList OPTIONAL }
+      -- If the claim name is present, the claim MUST contain one of
+      -- the listed values.
+  ( WITH COMPONENTS { ..., mustInclude PRESENT } |
+    WITH COMPONENTS { ..., permittedValues PRESENT } )
 
-  JWTClaimConstraint ::= SEQUENCE {
-    claim     IA5String,
-    permitted SEQUENCE OF IA5String
-    }
+  JWTClaimPermittedValuesList ::= SEQUENCE SIZE (1..MAX) Of
+                                    JWTClaimPermittedValues
+ 
+  JWTClaimPermittedValues ::= SEQUENCE {
+    claim  JWTClaimName,
+    permitted  SEQUENCE SIZE (1..MAX) OF UTF8String }
+ 
+  JWTClaimNames ::= SEQUENCE SIZE (1..MAX) OF JWTClaimName
+
+  JWTClaimName ::= IA5String
 
   --
   -- Telephone Number Authorization List Certificate Extension
