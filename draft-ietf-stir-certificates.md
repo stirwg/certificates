@@ -450,35 +450,44 @@ when accessing certificates from caches or other sources.
 
 # JWT Claim Constraints Syntax
 
-The subjects of certificates containing the JWT Claim Constraints
-certificate extension are specifies values for PASSporT claims that
-are permitted.  The syntax of these claims is given in PASSporT;
-specifying new claims follows the procedures in
-{{I-D.ietf-stir-passport}} (Section 8.3).  When a verifier is
-validating PASSporT claims, the JWT claim MUST contain permitted
-values.  The non-critical JWT Claim Constraints certificate extension
-is included in the extension field of end entity certificates
-{{RFC5280}}.  The extension is defined with ASN.1 {{X.680}}{{X.681}}
-{{X.682}}{{X.683}}.
+Certificate subjects are limited to specific values for PASSporT claims
+with the JWT Claim Constraints certificate extension; issuers permit
+all claims by omitting the JWT Claim Constraints certificate extension
+from the certificate's extension field {{RFC5280}}.  The extension is
+non-critical, applicable only to end-entity certificates, and defined
+with ASN.1 {{X.680}}{{X.681}}{{X.682}}{{X.683}} later in this section.
+The syntax of the claims is given in PASSporT; specifying new claims
+follows the procedures in {{I-D.ietf-stir-passport}} (Section 8.3).
 
-The JWT Claim Constraints certificate extension places constraints on
-the values that are allowed in particular JWT claims.  This
-certificate extension is optional, but if present, it constrains the
-claims that authentication services may included in the PASSporT
-objects they sign.  For example, imagine a PASSporT extension claim
-called "confidence" with values "low", "medium", and "high".  If a CA
-issues to an authentication service a certificate that contains the
-value "confidence" in the "claim" field and "high" in the "permitted"
-feild of the JWT Claim Constraints, then an authentication service
-MAY add a "high" "confidence" claim to any PASSporTs it generates.  A
-verification service MUST treat as invalid any PASSporT it receives
-with a PASSporT extension claim that is not included in JWT Claim
-Constraints.  The baseline claims of PASSporT ("orig", "dest", "iat"
-and "mky") are considered to be permitted by default and SHOULD NOT
-be included in the "claim" field.  The issuer of a certificate may
-similarly explicitly allow the use of a particular claim by the
-holder of the certificate.  If a certificate contains no JWT Claim
-Constraints, the issuer of the certificate permits all claims.
+This certificate extension is optional, but if present, it constrains
+the claims that authentication services may include in the PASSporT
+objects they sign.  Constraints are applied by issuers and enforced by
+verifiers when validating PASSporT claims as follows:
+
+1.  mustInclude indicates claims that MUST appear in the PASSporT in
+addition to iat, orig, and dest.  The baseline claims of PASSporT
+("iat", "orig", and "dest") are considered to be permitted by default
+and SHOULD NOT be included.  If mustInclude is absent, iat, orig, and
+dest MUST appear in the PASSporT.
+
+2.  permittedValues indicates that if the claim name is present, the
+claim MUST contain one of the listed values. 
+
+Consider two examples with a PASSporT claim called "confidence" with
+values "low", "medium", and  "high":
+
+* If a CA issues to an authentication service a certificate that
+contains the mustInclude JWTClaimName "confidence", then an
+authentication service MUST include the "confidence" claim in all
+PASSporTs it generates; a verification service will treat as invalid
+any PASSporT it receives with a PASSporT claim that does not include
+the "confidence" claim.
+
+* If a CA issues to an authentication service a certificate that
+contains the permittedValues JWTClaimName "confidence" and a permitted
+"high" value, then an authentication service will treat as invalid any
+PASSporT it receives with  a PASSporT claim that does not include the
+"confidence" claim with a "high" value.  
 
 The JWT Claim Constraints certificate extension is identified by the
 following object identifier (OID), which is defined under the id-pe
@@ -492,12 +501,27 @@ The JWT Claim Constraints certificate extension has the following
 syntax:
 
 ~~~
-  JWTClaimConstraints ::= SEQUENCE SIZE (1..MAX) OF JWTClaimConstraint
+  JWTClaimConstraints ::= SEQUENCE {
+    mustInclude [0] JWTClaimNames OPTIONAL,
+      -- The listed claim names MUST appear in the PASSporT in addition
+      -- to iat, orig, and dest.  If absent, iat, orig, and dest MUST
+      -- appear in the PASSporT.
+    permittedValues [1] JWTClaimPermittedValuesList OPTIONAL }
+      -- If the claim name is present, the claim MUST contain one of
+      -- the listed values.
+  ( WITH COMPONENTS { ..., mustInclude PRESENT } |
+    WITH COMPONENTS { ..., permittedValues PRESENT } )
 
-  JWTClaimConstraint ::= SEQUENCE {
-    claim     IA5String,
-    permitted SEQUENCE OF IA5String
-    }
+  JWTClaimPermittedValuesList ::= SEQUENCE SIZE (1..MAX) OF
+                                    JWTClaimPermittedValues
+
+  JWTClaimPermittedValues ::= SEQUENCE {
+    claim  JWTClaimName,
+    permitted  SEQUENCE SIZE (1..MAX) OF UTF8String }
+
+  JWTClaimNames ::= SEQUENCE SIZE (1..MAX) OF JWTClaimName
+
+  JWTClaimName ::= IA5String
 ~~~
 
 # TN Authorization List Syntax {#tn-authz-list}
@@ -759,12 +783,27 @@ This ASN.1 module imports ASN.1 from {{!RFC5912}}.
 
   id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 25 }
 
-  JWTClaimConstraints ::= SEQUENCE SIZE (1..MAX) OF JWTClaimConstraint
+  JWTClaimConstraints ::= SEQUENCE {
+    mustInclude [0] JWTClaimNames OPTIONAL,
+      -- The listed claim names MUST appear in the PASSporT in addition
+      -- to iat, orig, and dest.  If absent, iat, orig, and dest MUST
+      -- appear in the PASSporT.
+    permittedValues [1] JWTClaimPermittedValuesList OPTIONAL }
+      -- If the claim name is present, the claim MUST contain one of
+      -- the listed values.
+  ( WITH COMPONENTS { ..., mustInclude PRESENT } |
+    WITH COMPONENTS { ..., permittedValues PRESENT } )
 
-  JWTClaimConstraint ::= SEQUENCE {
-    claim     IA5String,
-    permitted SEQUENCE OF IA5String
-    }
+  JWTClaimPermittedValuesList ::= SEQUENCE SIZE (1..MAX) Of
+                                    JWTClaimPermittedValues
+ 
+  JWTClaimPermittedValues ::= SEQUENCE {
+    claim  JWTClaimName,
+    permitted  SEQUENCE SIZE (1..MAX) OF UTF8String }
+ 
+  JWTClaimNames ::= SEQUENCE SIZE (1..MAX) OF JWTClaimName
+
+  JWTClaimName ::= IA5String
 
   --
   -- Telephone Number Authorization List Certificate Extension
