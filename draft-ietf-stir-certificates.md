@@ -494,7 +494,7 @@ following object identifier (OID), which is defined under the id-pe
 OID arc defined in {{RFC5280}} and managed by IANA (see {{iana}}):
 
 ~~~
-  id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 25 }
+  id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 27 }
 ~~~
 
 The JWT Claim Constraints certificate extension has the following
@@ -781,7 +781,7 @@ This ASN.1 module imports ASN.1 from {{!RFC5912}}.
     SYNTAX JWTClaimConstraints IDENTIFIED BY id-pe-JWTClaimConstraints
     } 
 
-  id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 25 }
+  id-pe-JWTClaimConstraints OBJECT IDENTIFIER ::= { id-pe 27 }
 
   JWTClaimConstraints ::= SEQUENCE {
     mustInclude [0] JWTClaimNames OPTIONAL,
