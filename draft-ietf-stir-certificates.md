@@ -755,7 +755,7 @@ This ASN.1 module imports ASN.1 from {{!RFC5912}}.
 
   TN-Module-2016
     { iso(1) identified-organization(3) dod(6) internet(1) security(5)
-      mechanisms(5) pkix(7) id-mod(0) id-mod-tn-module(88) }
+      mechanisms(5) pkix(7) id-mod(0) id-mod-tn-module(89) }
 
   DEFINITIONS EXPLICIT TAGS ::= BEGIN
 
